@@ -190,8 +190,13 @@ export default function SiteFooter({
             </a>
           </div>
         </div>
-        <p
+        <div
           style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "6px 20px",
             margin: "34px 0 0",
             paddingTop: 20,
             borderTop: "1px solid rgba(241,233,218,.15)",
@@ -199,8 +204,11 @@ export default function SiteFooter({
             color: "rgba(241,233,218,.6)",
           }}
         >
-          © 2026 Provisions Cafe, Williamstown. Open 7 days, 7am – 3pm.
-        </p>
+          <p style={{ margin: 0 }}>
+            © 2026 Provisions Cafe, Williamstown. Open 7 days, 7am – 3pm.
+          </p>
+          <p style={{ margin: 0 }}>Website by daggerbuilds</p>
+        </div>
       </div>
     </footer>
   );

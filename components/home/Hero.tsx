@@ -9,14 +9,63 @@ import { BOOK_URL, ORDER_URL } from "@/components/site-data";
 const SLIDES = [
   { src: "/uploads/dining-room.webp", alt: "The dining room" },
   { src: "/uploads/counter.webp", alt: "The counter, mid-morning" },
+  { src: "/uploads/coffee.webp", alt: "Table with coffee" },
+  { src: "/uploads/food1.webp", alt: "Tasty food" },
+  { src: "/uploads/front.webp", alt: "Cafe front Image" },
+  { src: "/uploads/many-food.webp", alt: "Many Food" },
 ];
 
 const GULLS = [
-  { top: "5%", cross: "52s", delay: "0s", glide: "12s", w: 64, h: 29, opacity: 0.5, wing: "3.4s" },
-  { top: "26%", cross: "38s", delay: "4s", glide: "9s", w: 48, h: 22, opacity: 0.42, wing: "2.9s" },
-  { top: "8%", cross: "62s", delay: "22s", glide: "14s", w: 34, h: 15, opacity: 0.34, wing: "5.2s" },
-  { top: "34%", cross: "88s", delay: "34s", glide: "18s", w: 72, h: 32, opacity: 0.28, wing: "3.9s" },
-  { top: "13%", cross: "74s", delay: "9s", glide: "16s", w: 42, h: 19, opacity: 0.26, wing: "4.6s" },
+  {
+    top: "5%",
+    cross: "52s",
+    delay: "0s",
+    glide: "12s",
+    w: 64,
+    h: 29,
+    opacity: 0.5,
+    wing: "3.4s",
+  },
+  {
+    top: "26%",
+    cross: "38s",
+    delay: "4s",
+    glide: "9s",
+    w: 48,
+    h: 22,
+    opacity: 0.42,
+    wing: "2.9s",
+  },
+  {
+    top: "8%",
+    cross: "62s",
+    delay: "22s",
+    glide: "14s",
+    w: 34,
+    h: 15,
+    opacity: 0.34,
+    wing: "5.2s",
+  },
+  {
+    top: "34%",
+    cross: "88s",
+    delay: "34s",
+    glide: "18s",
+    w: 72,
+    h: 32,
+    opacity: 0.28,
+    wing: "3.9s",
+  },
+  {
+    top: "13%",
+    cross: "74s",
+    delay: "9s",
+    glide: "16s",
+    w: 42,
+    h: 19,
+    opacity: 0.26,
+    wing: "4.6s",
+  },
 ];
 
 function Gull({ g }: { g: (typeof GULLS)[number] }) {
@@ -30,19 +79,48 @@ function Gull({ g }: { g: (typeof GULLS)[number] }) {
         animation: `gull-cross ${g.cross} linear ${g.delay} infinite`,
       }}
     >
-      <div data-anim="1" style={{ animation: `glide-y ${g.glide} ease-in-out infinite` }}>
-        <svg width={g.w} height={g.h} viewBox="0 0 40 18" fill="none" style={{ opacity: g.opacity }}>
+      <div
+        data-anim="1"
+        style={{ animation: `glide-y ${g.glide} ease-in-out infinite` }}
+      >
+        <svg
+          width={g.w}
+          height={g.h}
+          viewBox="0 0 40 18"
+          fill="none"
+          style={{ opacity: g.opacity }}
+        >
           <g
             data-anim="1"
-            style={{ animation: `wing-l ${g.wing} ease-in-out infinite`, transformBox: "fill-box", transformOrigin: "100% 100%" }}
+            style={{
+              animation: `wing-l ${g.wing} ease-in-out infinite`,
+              transformBox: "fill-box",
+              transformOrigin: "100% 100%",
+            }}
           >
-            <path d="M20 11C13.5 4.2 8 3.4 2 7.2" stroke="#F1E9DA" strokeWidth="1.7" strokeLinecap="round" fill="none" />
+            <path
+              d="M20 11C13.5 4.2 8 3.4 2 7.2"
+              stroke="#F1E9DA"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              fill="none"
+            />
           </g>
           <g
             data-anim="1"
-            style={{ animation: `wing-r ${g.wing} ease-in-out infinite`, transformBox: "fill-box", transformOrigin: "0% 100%" }}
+            style={{
+              animation: `wing-r ${g.wing} ease-in-out infinite`,
+              transformBox: "fill-box",
+              transformOrigin: "0% 100%",
+            }}
           >
-            <path d="M20 11c6.5-6.8 12-7.6 18-3.8" stroke="#F1E9DA" strokeWidth="1.7" strokeLinecap="round" fill="none" />
+            <path
+              d="M20 11c6.5-6.8 12-7.6 18-3.8"
+              stroke="#F1E9DA"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              fill="none"
+            />
           </g>
         </svg>
       </div>
@@ -128,7 +206,8 @@ export default function Hero() {
           width: "100%",
           maxWidth: 1120,
           margin: "0 auto",
-          padding: "clamp(104px, 11vw, 142px) clamp(18px, 4vw, 40px) clamp(56px, 9vw, 100px)",
+          padding:
+            "clamp(104px, 11vw, 142px) clamp(18px, 4vw, 40px) clamp(56px, 9vw, 100px)",
         }}
       >
         {/* Flying gulls */}
@@ -151,7 +230,14 @@ export default function Hero() {
         </div>
 
         {/* Copy */}
-        <div style={{ position: "relative", zIndex: 1, flex: "1 1 320px", order: 1 }}>
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            flex: "1 1 320px",
+            order: 1,
+          }}
+        >
           <div
             data-anim="1"
             style={{
@@ -211,10 +297,22 @@ export default function Hero() {
               textWrap: "balance",
             }}
           >
-            <span data-anim="1" style={{ display: "block", animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .26s both" }}>
+            <span
+              data-anim="1"
+              style={{
+                display: "block",
+                animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .26s both",
+              }}
+            >
               All day,
             </span>
-            <span data-anim="1" style={{ display: "block", animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .4s both" }}>
+            <span
+              data-anim="1"
+              style={{
+                display: "block",
+                animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .4s both",
+              }}
+            >
               by the bay.
             </span>
           </h1>
@@ -235,9 +333,23 @@ export default function Hero() {
               viewBox="0 0 400 16"
               preserveAspectRatio="none"
               fill="none"
-              style={{ position: "absolute", left: 0, top: 0, width: "200%", height: 16, opacity: 0.6, animation: "drift-l 12s linear infinite" }}
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                width: "200%",
+                height: 16,
+                opacity: 0.6,
+                animation: "drift-l 12s linear infinite",
+              }}
             >
-              <path d="M0 8q25-7 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0" stroke="#E9C98E" strokeWidth="1.6" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path
+                d="M0 8q25-7 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0"
+                stroke="#E9C98E"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+              />
             </svg>
           </div>
           <p
@@ -252,11 +364,17 @@ export default function Hero() {
               animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .58s both",
             }}
           >
-            Coffee, breakfast and lunch two streets back from the water — open from 7am, seven days.
+            Coffee, breakfast and lunch two streets back from the water — open
+            from 7am, seven days.
           </p>
           <div
             data-anim="1"
-            style={{ display: "flex", flexWrap: "wrap", gap: 12, animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .7s both" }}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 12,
+              animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .7s both",
+            }}
           >
             <a
               href={BOOK_URL}
@@ -358,19 +476,65 @@ export default function Hero() {
             animation: "rise-in 1s cubic-bezier(.22,.7,.3,1) .46s both",
           }}
         >
-          <div data-anim="1" style={{ ...tileBase, animation: "tile-float 9s ease-in-out infinite" }}>
-            <ImageSlot src="/uploads/counter.webp" placeholder="Coffee on the bar" />
+          <div
+            data-anim="1"
+            style={{
+              ...tileBase,
+              animation: "tile-float 9s ease-in-out infinite",
+            }}
+          >
+            <ImageSlot
+              src="/uploads/coffee.webp"
+              placeholder="Coffee on the bar"
+            />
           </div>
-          <div data-anim="1" style={{ ...tileBase, transform: "translateY(20px)", animation: "tile-float-off 12s ease-in-out .8s infinite" }}>
-            <ImageSlot src="/uploads/dining-room.webp" placeholder="The dining room" />
+          <div
+            data-anim="1"
+            style={{
+              ...tileBase,
+              transform: "translateY(20px)",
+              animation: "tile-float-off 12s ease-in-out .8s infinite",
+            }}
+          >
+            <ImageSlot
+              src="/uploads/dining-room.webp"
+              placeholder="The dining room"
+            />
           </div>
-          <div data-anim="1" style={{ ...tileBase, animation: "tile-float 11s ease-in-out 1.6s infinite" }}>
-            <ImageSlot src="/uploads/counter.webp" placeholder="The counter, mid-morning" />
+          <div
+            data-anim="1"
+            style={{
+              ...tileBase,
+              animation: "tile-float 11s ease-in-out 1.6s infinite",
+            }}
+          >
+            <ImageSlot
+              src="/uploads/counter.webp"
+              placeholder="The counter, mid-morning"
+            />
           </div>
-          <div data-anim="1" style={{ ...tileBase, transform: "translateY(20px)", animation: "tile-float-off 10s ease-in-out 2.4s infinite" }}>
-            <ImageSlot placeholder="Out the front on Ferguson St" />
+          <div
+            data-anim="1"
+            style={{
+              ...tileBase,
+              transform: "translateY(20px)",
+              animation: "tile-float-off 10s ease-in-out 2.4s infinite",
+            }}
+          >
+            <ImageSlot
+              src="/uploads/many-food.webp"
+              placeholder="Many Food on the table"
+            />
           </div>
-          <p style={{ gridColumn: "1 / -1", margin: "26px 0 0", fontSize: 14, lineHeight: 1.5, color: "rgba(241,233,218,.75)" }}>
+          <p
+            style={{
+              gridColumn: "1 / -1",
+              margin: "26px 0 0",
+              fontSize: 14,
+              lineHeight: 1.5,
+              color: "rgba(241,233,218,.75)",
+            }}
+          >
             Drop your photos onto any frame.{" "}
             <Link href="/gallery" style={{ color: "#E9C98E" }}>
               See the gallery
