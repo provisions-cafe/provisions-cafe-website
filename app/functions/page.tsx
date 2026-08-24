@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Functions & catering",
   description:
     "Long tables, small crowds. Group bookings, exclusive use and catering to go from Provisions Cafe, Williamstown.",
+  alternates: { canonical: "/functions" },
 };
 
 const sectionH2: CSSProperties = {

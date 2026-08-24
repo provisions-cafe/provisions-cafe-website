@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "62–64 Ferguson St, Williamstown. Open 7am–3pm, seven days. Walk in, call 03 9399 9955, or leave us a note.",
+  alternates: { canonical: "/contact" },
 };
 
 const blueEyebrow: CSSProperties = {

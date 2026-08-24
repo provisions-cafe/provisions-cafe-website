@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Full menu",
   description:
     "Breakfast all morning, lunch through to close. Kitchen and takeaway orders until 2:30pm, seven days.",
+  alternates: { canonical: "/menu" },
 };
 
 const eyebrow: CSSProperties = {

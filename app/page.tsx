@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -16,6 +17,15 @@ import {
   PHONE_DISPLAY,
   PHONE_HREF,
 } from "@/components/site-data";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Provisions Cafe — Williamstown | Coffee, breakfast & lunch",
+  },
+  description:
+    "All day, by the bay. Coffee, breakfast and lunch two streets back from the water on Ferguson St, Williamstown. Open 7am–3pm, seven days.",
+  alternates: { canonical: "/" },
+};
 
 const eyebrow: CSSProperties = {
   margin: "0 0 10px",

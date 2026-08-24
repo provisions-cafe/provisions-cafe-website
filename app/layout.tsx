@@ -1,20 +1,49 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import RevealController from "@/components/RevealController";
+import StructuredData from "@/components/StructuredData";
+import { SITE_URL } from "@/components/site-data";
+
+const DESCRIPTION =
+  "Coffee, breakfast and lunch two streets back from the water on Ferguson St, Williamstown. Open 7am–3pm, seven days.";
+const OG_DESCRIPTION =
+  "All day, by the bay. Coffee, breakfast and lunch on Ferguson St, Williamstown.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://provisionscafe.example"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Provisions Cafe — Williamstown",
     template: "%s · Provisions Cafe",
   },
-  description:
-    "Coffee, breakfast and lunch two streets back from the water on Ferguson St, Williamstown. Open 7am–3pm, seven days.",
+  description: DESCRIPTION,
+  applicationName: "Provisions Cafe",
+  keywords: [
+    "Provisions Cafe",
+    "Williamstown cafe",
+    "Ferguson St",
+    "breakfast Williamstown",
+    "brunch Williamstown",
+    "coffee",
+    "lunch",
+  ],
+  authors: [{ name: "Provisions Cafe" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   openGraph: {
-    title: "Provisions Cafe — Williamstown",
-    description:
-      "All day, by the bay. Coffee, breakfast and lunch on Ferguson St, Williamstown.",
     type: "website",
+    siteName: "Provisions Cafe",
+    locale: "en_AU",
+    url: SITE_URL,
+    title: "Provisions Cafe — Williamstown",
+    description: OG_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Provisions Cafe — Williamstown",
+    description: OG_DESCRIPTION,
   },
 };
 
@@ -43,6 +72,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
+        <StructuredData />
         <RevealController />
         {children}
       </body>

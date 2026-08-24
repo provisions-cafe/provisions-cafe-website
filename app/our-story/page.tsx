@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Our story",
   description:
     "Soft blue walls, timber underfoot, a window bar for one and long tables for six. A small cafe two streets back from the Williamstown foreshore.",
+  alternates: { canonical: "/our-story" },
 };
 
 const bodyP: CSSProperties = {

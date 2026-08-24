@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Gallery",
   description:
     "The place, the food, the walk home — photos of Provisions Cafe in Williamstown.",
+  alternates: { canonical: "/gallery" },
 };
 
 export default function GalleryPage() {

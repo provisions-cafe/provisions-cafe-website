@@ -37,3 +37,26 @@ export const HOURS: Array<[number, string]> = [
   [0, "Sunday"],
 ];
 export const HOURS_TIME = "7am – 3pm";
+
+// Canonical site origin. Set NEXT_PUBLIC_SITE_URL at deploy time to the real
+// domain — the placeholder below is only so builds work locally.
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://provisionscafe.example"
+).replace(/\/+$/, "");
+
+// Business facts reused by structured data / SEO.
+export const BUSINESS = {
+  name: "Provisions Cafe",
+  streetAddress: "62-64 Ferguson St",
+  locality: "Williamstown",
+  region: "VIC",
+  postalCode: "3016",
+  country: "AU",
+  // Approximate — good enough for map eligibility; refine with the exact pin.
+  latitude: -37.8631,
+  longitude: 144.8969,
+  priceRange: "$$",
+  ratingValue: 4.4,
+  reviewCount: 269,
+  telephoneE164: "+61393999955",
+};
