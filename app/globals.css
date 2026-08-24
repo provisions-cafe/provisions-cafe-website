@@ -74,6 +74,38 @@ textarea {
   background: #a9762b !important;
 }
 
+.hv-credit:hover {
+  color: #e9c98e !important;
+}
+
+/* ---- Header responsive -------------------------------------------------- */
+/* Desktop shows the inline links; mobile swaps to a hamburger + dropdown. */
+.nav-mobile-toggle {
+  display: none;
+}
+.nav-mobile-panel {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .nav-desktop {
+    display: none !important;
+  }
+  .nav-mobile-toggle {
+    display: inline-flex !important;
+  }
+  .nav-mobile-panel {
+    display: flex !important;
+  }
+}
+
+/* Safety net if the viewport grows to desktop while the menu is open. */
+@media (min-width: 768px) {
+  .nav-mobile-panel {
+    display: none !important;
+  }
+}
+
 /* ---- Keyframes ---------------------------------------------------------- */
 @keyframes drift-l {
   from { transform: translateX(0); }

@@ -207,7 +207,18 @@ export default function SiteFooter({
           <p style={{ margin: 0 }}>
             © 2026 Provisions Cafe, Williamstown. Open 7 days, 7am – 3pm.
           </p>
-          <p style={{ margin: 0 }}>Website by daggerbuilds</p>
+          <p style={{ margin: 0 }}>
+            Website by{" "}
+            <a
+              href="https://www.daggerbuilds.com"
+              target="_blank"
+              rel="noopener"
+              className="hv-credit"
+              style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: 3 }}
+            >
+              daggerbuilds
+            </a>
+          </p>
         </div>
       </div>
     </footer>
