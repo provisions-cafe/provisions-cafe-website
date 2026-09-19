@@ -7,7 +7,7 @@ import GullImg from "@/components/GullImg";
 import ImageSlot from "@/components/ImageSlot";
 import HoursTable from "@/components/HoursTable";
 import Hero from "@/components/home/Hero";
-import { MenuHeading, MenuItem, CoffeeSteam } from "@/components/menu";
+import { MenuHeading, MenuItem } from "@/components/menu";
 import {
   BOOK_URL,
   ORDER_URL,
@@ -155,7 +155,7 @@ export default function HomePage() {
             }}
           >
             <div data-reveal="true" style={{ position: "relative", aspectRatio: "5 / 4", borderRadius: 6, overflow: "hidden", background: "#EDE4D4" }}>
-              <ImageSlot src="/uploads/counter.webp" placeholder="The room — timber floors, wooden stools" />
+              <ImageSlot src="/uploads/corner-nook.webp" placeholder="The room — timber floors, window bar" />
             </div>
             <div data-reveal="true">
               <h2 style={h2Bay}>Our place</h2>
@@ -276,45 +276,47 @@ export default function HomePage() {
               <div>
                 <MenuHeading>Breakfast</MenuHeading>
                 <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Poached or fried eggs on toast" price="$10.00" />
                   <MenuItem
-                    name="Big breaky"
-                    price="$26.00"
-                    desc="Eggs, bacon, sausage, mushrooms, spinach, grilled tomato, sourdough toast"
+                    name="Provisions Big Breaky"
+                    tag="V"
+                    price="$28.50"
+                    desc="Eggs your way on sourdough, hash brown, tomato, avo, mushroom, spinach, sausage, bacon or halloumi — house favourite"
+                  />
+                  <MenuItem
+                    name="Salmon Benny"
+                    price="$22.50"
+                    desc="Smoked salmon on sourdough, avocado, poached eggs, hollandaise, capers, dill cream cheese"
                   />
                 </div>
               </div>
               <div>
-                <MenuHeading>All day</MenuHeading>
+                <MenuHeading>Lunch &amp; evening</MenuHeading>
                 <div style={{ display: "grid", gap: 14 }}>
-                  <MenuItem name="Calamari & chips" price="$11.50" />
-                  <MenuItem name="Mush burger" price="$24.00" />
-                  <MenuItem name="Grilled salmon" price="$28.00" />
+                  <MenuItem name="Chicken Parmigiana" price="$26" />
+                  <MenuItem name="Creamy Truffle Mushroom Pasta" price="$24.50" />
+                  <MenuItem name="Grilled Fish" tag="GF" price="$26.50" />
                 </div>
               </div>
             </div>
 
             <div data-reveal="true" style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}>
               <div style={{ position: "relative", aspectRatio: "3 / 2", borderRadius: 6, overflow: "hidden", background: "#EDE4D4" }}>
-                <ImageSlot src="/uploads/counter.webp" placeholder="One dish — the big breaky" />
+                <ImageSlot src="/uploads/lunch.webp" placeholder="Toasties, cake and a bottle" />
+              </div>
+              <div>
+                <MenuHeading>Burgers &amp; wraps</MenuHeading>
+                <div style={{ display: "grid", gap: 14 }}>
+                  <MenuItem name="Provisions Ham Burger" price="$28.50" />
+                  <MenuItem name="The Cluckstore" price="$26.50" />
+                </div>
               </div>
               <div>
                 <MenuHeading>Sweet</MenuHeading>
-                <MenuItem name="Fruit salad pancakes" sub="short stack" price="$17.50" />
+                <MenuItem name="Pancakes" price="$21.50" />
               </div>
               <div>
                 <MenuHeading>Little ones</MenuHeading>
-                <MenuItem name="Babyccino" price="$3.50" />
-              </div>
-              <div>
-                <MenuHeading>
-                  Coffee &amp; drinks
-                  <CoffeeSteam />
-                </MenuHeading>
-                <div style={{ display: "grid", gap: 14 }}>
-                  <MenuItem name="Chai latte" sub="powdered" price="$5.00" />
-                  <MenuItem name="Iced coffee" price="$9.00" />
-                </div>
+                <MenuItem name="Nuggets & chips" price="$12.50" />
               </div>
             </div>
           </div>

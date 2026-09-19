@@ -74,7 +74,7 @@ export default function GalleryPage() {
               animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .28s both",
             }}
           >
-            Drop photos straight onto any frame below. Tap Enlarge to see one full size.
+            A look around Provisions — the room, the food, and the street outside. Tap Enlarge to see any photo full size.
           </p>
         </section>
 

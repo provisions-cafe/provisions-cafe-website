@@ -88,13 +88,16 @@ export function MenuItem({
   desc,
   sub,
   tag,
+  tags,
 }: {
   name: string;
   price: string;
   desc?: string;
   sub?: string;
   tag?: string;
+  tags?: string[];
 }) {
+  const tagList = tags ?? (tag ? [tag] : []);
   return (
     <div>
       <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
@@ -106,15 +109,15 @@ export function MenuItem({
               <span style={subStyle}>({sub})</span>
             </>
           ) : null}
-          {tag ? (
-            <>
+          {tagList.map((t) => (
+            <span key={t}>
               {" "}
-              <DietTag>{tag}</DietTag>
-            </>
-          ) : null}
+              <DietTag>{t}</DietTag>
+            </span>
+          ))}
         </span>
         <span style={leaderStyle} />
-        <span style={priceStyle}>{price}</span>
+        {price ? <span style={priceStyle}>{price}</span> : null}
       </div>
       {desc ? (
         <p

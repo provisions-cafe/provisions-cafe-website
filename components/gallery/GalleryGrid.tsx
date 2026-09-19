@@ -3,35 +3,42 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import ImageSlot from "@/components/ImageSlot";
 
-type Tile = { id: string; placeholder: string; label: string };
+type Tile = { id: string; src: string; placeholder: string; label: string };
 type Group = { title: string; aspect: string; tiles: Tile[] };
 
 const GROUPS: Group[] = [
   {
     title: "The space",
-    aspect: "4 / 5",
-    tiles: [
-      { id: "gal-space-1", placeholder: "Window bar, morning light", label: "The space — window bar, morning light" },
-      { id: "gal-space-2", placeholder: "Blue walls and timber floor", label: "The space — blue walls and timber floor" },
-      { id: "gal-space-3", placeholder: "Out the front, Ferguson St", label: "The space — out the front on Ferguson St" },
-    ],
-  },
-  {
-    title: "The food",
-    aspect: "1 / 1",
-    tiles: [
-      { id: "gal-food-1", placeholder: "Big breaky", label: "The food — big breaky" },
-      { id: "gal-food-2", placeholder: "Pancakes, short stack", label: "The food — fruit salad pancakes" },
-      { id: "gal-food-3", placeholder: "Coffee on the counter", label: "The food — coffee on the counter" },
-    ],
-  },
-  {
-    title: "The neighbourhood",
     aspect: "3 / 2",
     tiles: [
-      { id: "gal-hood-1", placeholder: "Ferguson St", label: "The neighbourhood — Ferguson St" },
-      { id: "gal-hood-2", placeholder: "Down at the water", label: "The neighbourhood — down at the water" },
-      { id: "gal-hood-3", placeholder: "Storefront", label: "The neighbourhood — the storefront" },
+      { id: "gal-space-1", src: "/uploads/mural.webp", placeholder: "The Provisions mural", label: "The space — the Provisions seagull mural" },
+      { id: "gal-space-2", src: "/uploads/dining-hall.webp", placeholder: "The dining room", label: "The space — the dining room and mural" },
+      { id: "gal-space-3", src: "/uploads/bar.webp", placeholder: "The room and counter", label: "The space — the room looking to the counter" },
+      { id: "gal-space-4", src: "/uploads/dining-prints.webp", placeholder: "Coastal prints on the wall", label: "The space — coastal prints along the wall" },
+      { id: "gal-space-5", src: "/uploads/corner-nook.webp", placeholder: "The window bar", label: "The space — the window bar and stools" },
+      { id: "gal-space-6", src: "/uploads/sign.webp", placeholder: "The Provisions sign", label: "The space — the Provisions sign" },
+    ],
+  },
+  {
+    title: "The food & coffee",
+    aspect: "1 / 1",
+    tiles: [
+      { id: "gal-food-1", src: "/uploads/coffee.webp", placeholder: "Coffee, latte art", label: "The food — coffee with latte art" },
+      { id: "gal-food-2", src: "/uploads/coffee-table.webp", placeholder: "Coffee on the table", label: "The food — coffee on the table" },
+      { id: "gal-food-3", src: "/uploads/brunch.webp", placeholder: "Coffee and toasties", label: "The food — coffee and toasties" },
+      { id: "gal-food-4", src: "/uploads/food-plates.webp", placeholder: "Toasties and cake", label: "The food — toasties and cake" },
+      { id: "gal-food-5", src: "/uploads/lunch.webp", placeholder: "Lunch on the table", label: "The food — lunch on the table" },
+      { id: "gal-food-6", src: "/uploads/display-cabinet.webp", placeholder: "The cabinet", label: "The food — the display cabinet" },
+    ],
+  },
+  {
+    title: "The team & the street",
+    aspect: "3 / 2",
+    tiles: [
+      { id: "gal-hood-1", src: "/uploads/storefront.webp", placeholder: "Storefront, Ferguson St", label: "The street — the storefront on Ferguson St" },
+      { id: "gal-hood-2", src: "/uploads/outdoor.webp", placeholder: "Out the front", label: "The street — seating out the front" },
+      { id: "gal-hood-3", src: "/uploads/barista.webp", placeholder: "On the machine", label: "The team — coffee on the machine" },
+      { id: "gal-hood-4", src: "/uploads/team.webp", placeholder: "Behind the counter", label: "The team — behind the counter" },
     ],
   },
 ];
@@ -66,7 +73,7 @@ const enlargeBtn: CSSProperties = {
 };
 
 export default function GalleryGrid() {
-  const [open, setOpen] = useState<{ placeholder: string; label: string } | null>(
+  const [open, setOpen] = useState<{ src: string; placeholder: string; label: string } | null>(
     null,
   );
 
@@ -115,11 +122,11 @@ export default function GalleryGrid() {
                     background: "#EDE4D4",
                   }}
                 >
-                  <ImageSlot placeholder={tile.placeholder} />
+                  <ImageSlot src={tile.src} placeholder={tile.placeholder} />
                   <button
                     type="button"
                     className="hv-enlarge"
-                    onClick={() => setOpen({ placeholder: tile.placeholder, label: tile.label })}
+                    onClick={() => setOpen({ src: tile.src, placeholder: tile.placeholder, label: tile.label })}
                     style={enlargeBtn}
                   >
                     Enlarge
@@ -172,7 +179,7 @@ export default function GalleryGrid() {
         >
           <div style={{ position: "relative", width: "min(1000px, 100%)", maxHeight: "100%", display: "grid", gap: 12 }}>
             <div style={{ position: "relative", width: "100%", aspectRatio: "3 / 2", borderRadius: 6, overflow: "hidden", background: "#2A5670" }}>
-              <ImageSlot fit="contain" placeholder="Drop a photo here" />
+              <ImageSlot fit="contain" src={open.src} placeholder={open.placeholder} />
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
               <p style={{ margin: 0, fontSize: 15.5, color: "rgba(241,233,218,.85)" }}>{open.label}</p>

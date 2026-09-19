@@ -190,7 +190,7 @@ export default function FunctionsPage() {
                 boxShadow: "0 18px 40px -28px rgba(58,43,34,.5)",
               }}
             >
-              <ImageSlot placeholder="A long table set up for a group" />
+              <ImageSlot src="/uploads/dining-prints.webp" placeholder="A long table set up for a group" />
             </div>
           </div>
         </section>

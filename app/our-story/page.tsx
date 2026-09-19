@@ -152,7 +152,7 @@ export default function OurStoryPage() {
                 animation: "float-y 13s ease-in-out 1.4s infinite",
               }}
             >
-              <ImageSlot placeholder="The room — blue walls, timber, window bar" />
+              <ImageSlot src="/uploads/mural.webp" placeholder="The room — blue walls, timber, window bar" />
             </div>
           </div>
         </section>

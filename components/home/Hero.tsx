@@ -1,18 +1,23 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import ImageSlot from "@/components/ImageSlot";
 import { BOOK_URL, ORDER_URL } from "@/components/site-data";
 
-// Only two source photos survived import, so the hero cross-fades between them.
+// The hero cross-fades through a set of the cafe's own photos.
 const SLIDES = [
-  { src: "/uploads/dining-room.webp", alt: "The dining room" },
+  {
+    src: "/uploads/dining-room.webp",
+    alt: "The dining room — blue walls and warm timber floors",
+  },
+  {
+    src: "/uploads/storefront.webp",
+    alt: "Provisions Cafe storefront on Ferguson St",
+  },
+  { src: "/uploads/coffee.webp", alt: "Coffee with latte art" },
+  { src: "/uploads/food-plates.webp", alt: "Toasties and cake on the table" },
   { src: "/uploads/counter.webp", alt: "The counter, mid-morning" },
-  { src: "/uploads/coffee.webp", alt: "Table with coffee" },
-  { src: "/uploads/food1.webp", alt: "Tasty food" },
-  { src: "/uploads/front.webp", alt: "Cafe front Image" },
-  { src: "/uploads/many-food.webp", alt: "Many Food" },
+  { src: "/uploads/bar.webp", alt: "The dining room and counter" },
 ];
 
 const GULLS = [
@@ -484,8 +489,8 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/coffee.webp"
-              placeholder="Coffee on the bar"
+              src="/uploads/coffee-table.webp"
+              placeholder="Coffee on the table"
             />
           </div>
           <div
@@ -497,7 +502,7 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/dining-room.webp"
+              src="/uploads/dining-hall.webp"
               placeholder="The dining room"
             />
           </div>
@@ -509,8 +514,8 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/counter.webp"
-              placeholder="The counter, mid-morning"
+              src="/uploads/team.webp"
+              placeholder="Coffee and toasties"
             />
           </div>
           <div
@@ -522,24 +527,10 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/many-food.webp"
-              placeholder="Many Food on the table"
+              src="/uploads/barista.webp"
+              placeholder="Barista at the machine"
             />
           </div>
-          <p
-            style={{
-              gridColumn: "1 / -1",
-              margin: "26px 0 0",
-              fontSize: 14,
-              lineHeight: 1.5,
-              color: "rgba(241,233,218,.75)",
-            }}
-          >
-            Drop your photos onto any frame.{" "}
-            <Link href="/gallery" style={{ color: "#E9C98E" }}>
-              See the gallery
-            </Link>
-          </p>
         </div>
       </div>
     </section>
