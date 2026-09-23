@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import RevealController from "@/components/RevealController";
 import StructuredData from "@/components/StructuredData";
@@ -75,6 +76,7 @@ export default function RootLayout({
         <StructuredData />
         <RevealController />
         {children}
+        <Analytics />
       </body>
     </html>
   );

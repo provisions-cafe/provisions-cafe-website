@@ -59,11 +59,15 @@ const pill: CSSProperties = {
   color: "#1E4359",
   background: "#F7F1E6",
 };
-const toFillCard: CSSProperties = {
-  padding: 22,
-  border: "1px dashed rgba(169,118,43,.6)",
-  borderRadius: 4,
-  background: "rgba(169,118,43,.07)",
+const reviewCard: CSSProperties = {
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  padding: "26px 26px 24px",
+  border: "1px solid rgba(58,43,34,.12)",
+  borderRadius: 12,
+  background: "#FBF7EF",
+  boxShadow: "0 14px 32px -26px rgba(30,67,89,.55)",
 };
 const infoCard: CSSProperties = {
   padding: 22,
@@ -86,6 +90,17 @@ const blueEyebrow: CSSProperties = {
   textTransform: "uppercase",
   color: "#C79A4E",
 };
+
+function GoogleMark() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <path fill="#4285F4" d="M23.52 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.87Z" />
+      <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.94-2.91l-3.88-3c-1.08.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.09A12 12 0 0 0 12 24Z" />
+      <path fill="#FBBC05" d="M5.29 14.29A7.2 7.2 0 0 1 4.91 12c0-.8.14-1.57.38-2.29V6.62H1.28A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.38l4.01-3.09Z" />
+      <path fill="#EA4335" d="M12 4.75c1.76 0 3.34.61 4.59 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.28 6.62l4.01 3.09C6.23 6.86 8.88 4.75 12 4.75Z" />
+    </svg>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -155,7 +170,7 @@ export default function HomePage() {
             }}
           >
             <div data-reveal="true" style={{ position: "relative", aspectRatio: "5 / 4", borderRadius: 6, overflow: "hidden", background: "#EDE4D4" }}>
-              <ImageSlot src="/uploads/corner-nook.webp" placeholder="The room — timber floors, window bar" />
+              <ImageSlot src="/uploads/dining-room.webp" placeholder="The dining room — blue walls, timber floors" />
             </div>
             <div data-reveal="true">
               <h2 style={h2Bay}>Our place</h2>
@@ -217,14 +232,35 @@ export default function HomePage() {
             style={{
               display: "flex",
               flexWrap: "wrap",
-              alignItems: "baseline",
+              alignItems: "flex-end",
               justifyContent: "space-between",
               gap: 14,
               marginBottom: "clamp(26px, 4vw, 40px)",
             }}
           >
-            <h2 style={{ ...h2Bay, margin: 0, fontSize: "clamp(30px, 4.2vw, 46px)" }}>4.4★ · 269 reviews</h2>
-            <a href={REVIEWS_URL} target="_blank" rel="noopener" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontSize: 16, color: "#1E4359" }}>
+            <div>
+              <p style={{ ...eyebrow, margin: "0 0 8px" }}>Kind words</p>
+              <h2 style={{ ...h2Bay, margin: 0, fontSize: "clamp(30px, 4.2vw, 46px)" }}>4.4★ · 269 reviews</h2>
+            </div>
+            <a
+              href={REVIEWS_URL}
+              target="_blank"
+              rel="noopener"
+              className="hv-ghost-dark"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                minHeight: 44,
+                padding: "10px 18px",
+                borderRadius: 999,
+                border: "1.5px solid rgba(30,67,89,.28)",
+                fontSize: 15.5,
+                fontWeight: 600,
+                color: "#1E4359",
+              }}
+            >
+              <GoogleMark />
               Read them on Google
             </a>
             <GullImg
@@ -232,18 +268,89 @@ export default function HomePage() {
               style={{ zIndex: -1, right: -70, top: -70, width: "min(30vw, 260px)", opacity: 0.32, transform: "rotate(7deg)" }}
             />
           </div>
-          <div data-reveal="true" style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
+          <div data-reveal="true" style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(272px, 1fr))" }}>
             {[
-              ["To fill · review 1", "Paste a real Google review here, with the reviewer's first name and their star rating."],
-              ["To fill · review 2", "One about the food or the coffee works well in the middle spot."],
-              ["To fill · review 3", "Something from a regular about the room or the service rounds it out."],
-            ].map(([label, text]) => (
-              <div key={label} style={toFillCard}>
-                <p style={{ margin: "0 0 10px", fontSize: 12.5, fontWeight: 600, letterSpacing: ".16em", textTransform: "uppercase", color: "#A9762B" }}>
-                  {label}
-                </p>
-                <p style={{ margin: 0, fontSize: 16.5, lineHeight: 1.6, color: "#8A5F22" }}>{text}</p>
-              </div>
+              {
+                name: "Kinjal",
+                initial: "K",
+                when: "4 months ago",
+                accent: "#1E4359",
+                fg: "#FBF7EF",
+                text: "Service was amazing and very warm! Loved the food and portions 🫰🏻 The owners were very warm and inviting too. Definitely going back.",
+              },
+              {
+                name: "Reuben",
+                initial: "R",
+                when: "3 months ago",
+                accent: "#4E7A4A",
+                fg: "#FBF7EF",
+                text: "Had the crispy crown — it tasted so good, especially for $20, and came out very quick as well, with great service. Definitely a hidden gem in Williamstown; would recommend over any cafe in the area.",
+              },
+              {
+                name: "Rosemary",
+                initial: "R",
+                when: "3 weeks ago",
+                accent: "#C79A4E",
+                fg: "#24170F",
+                text: "We visited Provisions today, as we heard it was under new management. What a delicious brekkie roll we had — one of the best. The service was extra good, and the fresh decor is very welcoming. Thank you.",
+              },
+            ].map(({ name, initial, when, accent, fg, text }) => (
+              <figure key={name} className="review-card" style={reviewCard}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    gap: 12,
+                    marginBottom: 10,
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      fontFamily: "Petrona, Georgia, serif",
+                      fontSize: 54,
+                      lineHeight: 0.7,
+                      color: "rgba(199,154,78,.45)",
+                    }}
+                  >
+                    &ldquo;
+                  </span>
+                  <span aria-label="Rated 5 out of 5" style={{ fontSize: 15, letterSpacing: 2, color: "#C79A4E", whiteSpace: "nowrap" }}>
+                    ★★★★★
+                  </span>
+                </div>
+                <blockquote style={{ margin: "0 0 22px", fontSize: 16.5, lineHeight: 1.64, color: "#3F3128", textWrap: "pretty" }}>
+                  {text}
+                </blockquote>
+                <figcaption style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 12 }}>
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      display: "grid",
+                      placeItems: "center",
+                      width: 42,
+                      height: 42,
+                      flexShrink: 0,
+                      borderRadius: "50%",
+                      background: accent,
+                      color: fg,
+                      fontFamily: "Petrona, Georgia, serif",
+                      fontSize: 18,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {initial}
+                  </span>
+                  <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <span style={{ fontSize: 15, fontWeight: 600, color: "#1E4359" }}>{name}</span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, color: "#8A7A6B" }}>
+                      <GoogleMark />
+                      Google review · {when}
+                    </span>
+                  </span>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </section>

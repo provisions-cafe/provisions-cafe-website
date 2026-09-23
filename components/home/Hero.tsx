@@ -514,8 +514,8 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/team.webp"
-              placeholder="Coffee and toasties"
+              src="/uploads/counter.webp"
+              placeholder="The counter — coffee and cabinet"
             />
           </div>
           <div
@@ -527,8 +527,8 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/barista.webp"
-              placeholder="Barista at the machine"
+              src="/uploads/display-cabinet.webp"
+              placeholder="Cakes in the cabinet"
             />
           </div>
         </div>
