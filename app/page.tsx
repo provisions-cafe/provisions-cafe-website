@@ -384,24 +384,23 @@ export default function HomePage() {
                 <MenuHeading>Breakfast</MenuHeading>
                 <div style={{ display: "grid", gap: 16 }}>
                   <MenuItem
-                    name="Provisions Big Breaky"
-                    tag="V"
-                    price="$28.50"
-                    desc="Eggs your way on sourdough, hash brown, tomato, avo, mushroom, spinach, sausage, bacon or halloumi — house favourite"
+                    name="Provisions Big Breakfast"
+                    price="$27.50"
+                    desc="Bacon, spinach & mushroom, grilled tomato, hashbrown, sausage, avocado and eggs your way — house favourite"
                   />
                   <MenuItem
-                    name="Salmon Benny"
-                    price="$22.50"
-                    desc="Smoked salmon on sourdough, avocado, poached eggs, hollandaise, capers, dill cream cheese"
+                    name="Beef Ragu Shakshuka"
+                    price="$24.50"
+                    desc="Chef's oven-baked beefy shakshuka, bell pepper, two eggs in sauce, served with garlic pitta bread"
                   />
                 </div>
               </div>
               <div>
-                <MenuHeading>Lunch &amp; evening</MenuHeading>
+                <MenuHeading>Lunch</MenuHeading>
                 <div style={{ display: "grid", gap: 14 }}>
-                  <MenuItem name="Chicken Parmigiana" price="$26" />
-                  <MenuItem name="Creamy Truffle Mushroom Pasta" price="$24.50" />
-                  <MenuItem name="Grilled Fish" tag="GF" price="$26.50" />
+                  <MenuItem name="Butter Chicken" price="$25.50" />
+                  <MenuItem name="Beef Lasagne" price="$25.50" />
+                  <MenuItem name="Market Fish" tag="GF" price="$25.90" />
                 </div>
               </div>
             </div>
@@ -411,19 +410,19 @@ export default function HomePage() {
                 <ImageSlot src="/uploads/lunch.webp" placeholder="Toasties, cake and a bottle" />
               </div>
               <div>
-                <MenuHeading>Burgers &amp; wraps</MenuHeading>
+                <MenuHeading>Burgers &amp; sandwiches</MenuHeading>
                 <div style={{ display: "grid", gap: 14 }}>
-                  <MenuItem name="Provisions Ham Burger" price="$28.50" />
-                  <MenuItem name="The Cluckstore" price="$26.50" />
+                  <MenuItem name="Wagyu Cheeseburger" price="$24.50" />
+                  <MenuItem name="Provisions Steak Sandwich" price="$25.50" />
                 </div>
               </div>
               <div>
                 <MenuHeading>Sweet</MenuHeading>
-                <MenuItem name="Pancakes" price="$21.50" />
+                <MenuItem name="Crème Brûlée" price="$16.50" />
               </div>
               <div>
                 <MenuHeading>Little ones</MenuHeading>
-                <MenuItem name="Nuggets & chips" price="$12.50" />
+                <MenuItem name="Kids Burger" price="$14.50" />
               </div>
             </div>
           </div>
