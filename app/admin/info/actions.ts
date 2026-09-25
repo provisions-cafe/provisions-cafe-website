@@ -44,6 +44,20 @@ const settingsSchema = z.object({
     telephoneE164: z.string().trim(),
   }),
   hours: z.array(hour).length(7, "Expected 7 days of hours"),
+  whatsOn: z.object({
+    intro: z.string().trim(),
+    cards: z
+      .array(
+        z.object({
+          title: z.string().trim(),
+          text: z.string().trim(),
+          mode: z.enum(["menu", "custom"]).optional(),
+          menuItemId: z.string().uuid().nullable().optional(),
+          imageUrl: z.string().url().nullable().optional(),
+        }),
+      )
+      .max(6),
+  }),
 });
 
 export async function updateSettings(input: SiteSettings): Promise<ActionResult> {

@@ -89,6 +89,7 @@ export function MenuItem({
   sub,
   tag,
   tags,
+  img,
 }: {
   name: string;
   price: string;
@@ -96,10 +97,30 @@ export function MenuItem({
   sub?: string;
   tag?: string;
   tags?: string[];
+  img?: string;
 }) {
   const tagList = tags ?? (tag ? [tag] : []);
   return (
     <div>
+      {img ? (
+        <div
+          style={{
+            position: "relative",
+            aspectRatio: "3 / 2",
+            borderRadius: 6,
+            overflow: "hidden",
+            marginBottom: 10,
+            background: "#EDE4D4",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={img}
+            alt={name}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </div>
+      ) : null}
       <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
         <span style={nameStyle}>
           {name}

@@ -182,6 +182,7 @@ export default async function MenuPage() {
                           desc={it.desc}
                           sub={it.sub}
                           tags={it.tags}
+                          img={it.imageUrl}
                         />
                       ))}
                     </div>

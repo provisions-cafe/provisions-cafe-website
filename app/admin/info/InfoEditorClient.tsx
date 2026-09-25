@@ -8,8 +8,14 @@ import {
   type ReactNode,
 } from "react";
 import type { SiteSettings } from "@/lib/settings";
+import ImageUploader from "@/components/ImageUploader";
 import { updateSettings } from "./actions";
-import { COLORS, card, label, input, btnPrimary, h2 } from "../ui";
+import { COLORS, card, label, input, textarea, btnPrimary, btnGhost, h2 } from "../ui";
+
+export type MenuGroup = {
+  category: string;
+  items: { id: string; name: string }[];
+};
 
 const grid2: CSSProperties = {
   display: "grid",
@@ -55,8 +61,10 @@ function Field({
 
 export default function InfoEditorClient({
   initial,
+  menuGroups,
 }: {
   initial: SiteSettings;
+  menuGroups: MenuGroup[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -78,6 +86,33 @@ export default function InfoEditorClient({
     setS((p) => ({
       ...p,
       hours: p.hours.map((h, idx) => (idx === i ? { ...h, [k]: v } : h)),
+    }));
+
+  const setWhatsOnIntro = (v: string) =>
+    setS((p) => ({ ...p, whatsOn: { ...p.whatsOn, intro: v } }));
+  const setWhatsOnCard = (
+    i: number,
+    k: "title" | "text" | "menuItemId" | "imageUrl",
+    v: string | null,
+  ) =>
+    setS((p) => ({
+      ...p,
+      whatsOn: {
+        ...p.whatsOn,
+        cards: p.whatsOn.cards.map((c, idx) =>
+          idx === i ? { ...c, [k]: v } : c,
+        ),
+      },
+    }));
+  const setWhatsOnMode = (i: number, mode: "menu" | "custom") =>
+    setS((p) => ({
+      ...p,
+      whatsOn: {
+        ...p.whatsOn,
+        cards: p.whatsOn.cards.map((c, idx) =>
+          idx === i ? { ...c, mode } : c,
+        ),
+      },
     }));
 
   function save() {
@@ -164,6 +199,133 @@ export default function InfoEditorClient({
                 />
                 Closed
               </label>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="What’s on (home page)">
+        <div style={{ marginBottom: 14 }}>
+          <label style={label}>Intro line</label>
+          <input
+            style={input}
+            value={s.whatsOn.intro}
+            onChange={(e) => setWhatsOnIntro(e.target.value)}
+          />
+        </div>
+        <div style={{ display: "grid", gap: 16 }}>
+          {s.whatsOn.cards.map((c, i) => (
+            <div
+              key={i}
+              style={{
+                display: "grid",
+                gap: 10,
+                padding: 14,
+                border: `1px solid ${COLORS.line}`,
+                borderRadius: 6,
+              }}
+            >
+              <label style={label}>Card {i + 1}</label>
+              <input
+                style={input}
+                value={c.title}
+                placeholder="Title (e.g. Today's specials)"
+                onChange={(e) => setWhatsOnCard(i, "title", e.target.value)}
+              />
+
+              <div style={{ display: "flex", gap: 8 }}>
+                {(["menu", "custom"] as const).map((m) => {
+                  const active = (c.mode ?? "custom") === m;
+                  return (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => setWhatsOnMode(i, m)}
+                      style={{
+                        minHeight: 34,
+                        padding: "5px 14px",
+                        borderRadius: 999,
+                        fontSize: 13.5,
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        border: active ? "none" : "1.5px solid rgba(30,67,89,.35)",
+                        background: active ? COLORS.bay : "transparent",
+                        color: active ? COLORS.cream : COLORS.bay,
+                      }}
+                    >
+                      {m === "menu" ? "From the menu" : "Custom"}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {(c.mode ?? "custom") === "menu" ? (
+                <>
+                  <div>
+                    <label style={label}>Menu item — its photo, name & price will show</label>
+                    <select
+                      style={input}
+                      value={c.menuItemId ?? ""}
+                      onChange={(e) => setWhatsOnCard(i, "menuItemId", e.target.value || null)}
+                    >
+                      <option value="">— Pick a dish —</option>
+                      {menuGroups.map((g) => (
+                        <optgroup key={g.category} label={g.category}>
+                          {g.items.map((it) => (
+                            <option key={it.id} value={it.id}>
+                              {it.name}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                    </select>
+                  </div>
+                  <textarea
+                    style={textarea}
+                    value={c.text}
+                    placeholder="Optional note under the dish"
+                    onChange={(e) => setWhatsOnCard(i, "text", e.target.value)}
+                  />
+                </>
+              ) : (
+                <>
+                  <textarea
+                    style={textarea}
+                    value={c.text}
+                    placeholder="Text"
+                    onChange={(e) => setWhatsOnCard(i, "text", e.target.value)}
+                  />
+                  <div>
+                    <label style={label}>Photo (optional)</label>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                      {c.imageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={c.imageUrl}
+                          alt=""
+                          style={{ width: 96, height: 72, objectFit: "cover", borderRadius: 6, border: `1px solid ${COLORS.line}` }}
+                        />
+                      ) : (
+                        <span style={{ fontSize: 13, color: COLORS.muted }}>No photo</span>
+                      )}
+                      <ImageUploader
+                        path={`whatson/card-${i}.webp`}
+                        label={c.imageUrl ? "Replace photo" : "Upload photo"}
+                        onUploaded={(url) => setWhatsOnCard(i, "imageUrl", url)}
+                      />
+                      {c.imageUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setWhatsOnCard(i, "imageUrl", null)}
+                          style={{ ...btnGhost, minHeight: 36, padding: "6px 14px", fontSize: 13.5 }}
+                        >
+                          Remove photo
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>

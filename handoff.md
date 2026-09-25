@@ -199,8 +199,9 @@ This is the concrete mapping a new session needs to build the schema + seed.
   `{ urls:{book,order,directions,reviews,mapEmbed}, contact:{phoneDisplay,phoneHref,
   addressLine1,addressLine2}, business:{name,streetAddress,locality,region,postalCode,
   country,latitude,longitude,priceRange,ratingValue,reviewCount,telephoneE164},
-  hours:[{day,label,time,closed}] (Mon-first, 7 entries) }`. `NAV_ITEMS` stays in
-  code (not in v1). Settings actions revalidate via `revalidatePath("/", "layout")`.
+  hours:[{day,label,time,closed}] (Mon-first, 7 entries),
+  whatsOn:{intro, cards:[{title,text}]} }`. `NAV_ITEMS` stays in code (not in v1).
+  Settings actions revalidate via `revalidatePath("/", "layout")`.
 - **Consumers to rewire** (grep `site-data` importers): `SiteHeader.tsx`,
   `SiteFooter.tsx`, `StructuredData.tsx`, `HoursTable.tsx`, `app/menu/page.tsx`,
   `app/contact/*`, `app/page.tsx`, `sitemap.ts`, `layout.tsx`.
@@ -309,7 +310,22 @@ Ordered; check off as completed. `[~]` = partially done.
   - [x] Photo/media manager ✅ — `app/admin/media/{page,MediaManagerClient,actions}.tsx`
         + `components/ImageUploader.tsx` + `lib/convertToWebp.ts` (browser WebP
         convert → upload to `media` bucket → `setImageOverride`). "Photos" in nav.
-  - [ ] TODO: specials editor (+ public wiring), users admin, activity-log viewer.
+  - [x] **Specials — DECIDED (session 3):** managed via the **Menu editor** (add a
+        "Specials"/"This week" category), NOT a separate feature. The `specials`
+        table is unused (leave empty or drop later). The home **"What's on"** section
+        is now **editable** via the Business info editor — stored as
+        `site_settings.whatsOn` `{ intro, cards:[{title,text,mode,menuItemId?,imageUrl?}] }`.
+        Each card has a **mode**: `menu` (pick a dish — its photo + name + price show,
+        via `getMenu` by id) or `custom` (own uploaded photo + text). `MenuItem` carries
+        optional `id`. Wired into `app/page.tsx`. Verified rendering (DB read confirmed).
+  - [x] **Menu-item photos (session 3):** `menu_items.image_url` (migration
+        `supabase/migration_001_menu_images.sql`; folded into menu.sql/all.sql; column
+        confirmed present in the live DB). Uploadable per dish in the Menu editor;
+        shown on `/menu` via `<MenuItem img>`.
+  - [x] **Uploads now supersede:** `ImageUploader` takes an optional `path` → upsert to
+        a stable key (`menu/<id>.webp`, `whatson/card-<i>.webp`, `slots/<slot>.webp`) +
+        `?v=` cache-bust, so re-uploading replaces instead of piling up files.
+  - [ ] TODO (optional polish): users admin, activity-log viewer.
 - **Phase 6 — Polish**
   - [ ] Users admin, activity log viewer, empty/error states, final QA, deploy env
         vars on Vercel (incl. `SUPABASE_SERVICE_ROLE_KEY`).

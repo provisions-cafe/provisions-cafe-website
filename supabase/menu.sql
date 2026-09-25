@@ -55,6 +55,7 @@ create table if not exists public.menu_items (
   price           text,
   description     text,
   sub             text,
+  image_url       text,
   tags            text[] not null default '{}',
   is_highlight    boolean not null default false,
   highlight_group text,

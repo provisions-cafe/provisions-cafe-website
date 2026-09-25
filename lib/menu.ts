@@ -5,10 +5,12 @@
 // Mirrors app/menu/page.tsx + supabase/seed.sql — KEEP IN SYNC.
 
 export type MenuItem = {
+  id?: string; // DB id (absent on code defaults)
   name: string;
   price: string;
   desc?: string; // DB column is `description`; mapped to `desc` for <MenuItem/>
   sub?: string;
+  imageUrl?: string; // optional dish photo (media bucket)
   tags: string[];
   isHighlight: boolean;
   highlightGroup?: string;

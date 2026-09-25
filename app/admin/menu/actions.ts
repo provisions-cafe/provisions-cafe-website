@@ -36,11 +36,13 @@ const categoryInput = z.object({
 });
 
 const itemInput = z.object({
+  id: z.string().uuid().optional(),
   category_id: z.string().uuid("Pick a category"),
   name: z.string().trim().min(1, "Name is required"),
   price: z.string().trim(),
   description: z.string().trim().optional(),
   sub: z.string().trim().optional(),
+  image_url: z.string().url().nullable().optional(),
   tags: z.array(z.string().trim()).default([]),
   is_highlight: z.boolean(),
   highlight_group: z.string().trim().optional(),
@@ -116,6 +118,8 @@ export async function createItem(input: ItemInput): Promise<ActionResult> {
   const supabase = await authedClient();
   if (!supabase) return { error: "Not authenticated." };
 
+  // parsed.data carries the client-generated id (used for the image path); an
+  // undefined id is dropped when serialized so the DB default still applies.
   const { error } = await supabase.from("menu_items").insert(parsed.data);
   if (error) return { error: error.message };
 
@@ -134,9 +138,10 @@ export async function updateItem(
   const supabase = await authedClient();
   if (!supabase) return { error: "Not authenticated." };
 
+  const { id: _ignore, ...updateData } = parsed.data;
   const { error } = await supabase
     .from("menu_items")
-    .update(parsed.data)
+    .update(updateData)
     .eq("id", id);
   if (error) return { error: error.message };
 

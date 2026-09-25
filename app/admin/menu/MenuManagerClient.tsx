@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type CSSProperties } from "react";
 import { HIGHLIGHT_GROUP_ORDER } from "@/lib/menu";
+import ImageUploader from "@/components/ImageUploader";
 import {
   COLORS,
   card,
@@ -34,6 +35,7 @@ export type AdminItem = {
   price: string | null;
   description: string | null;
   sub: string | null;
+  image_url: string | null;
   tags: string[] | null;
   is_highlight: boolean;
   highlight_group: string | null;
@@ -212,6 +214,8 @@ function ItemForm({
   const [isHighlight, setIsHighlight] = useState(initial?.is_highlight ?? false);
   const [highlightGroup, setHighlightGroup] = useState(initial?.highlight_group ?? "");
   const [highlightOrder, setHighlightOrder] = useState(initial?.highlight_order ?? 0);
+  const [itemId] = useState(() => initial?.id ?? crypto.randomUUID());
+  const [imageUrl, setImageUrl] = useState<string | null>(initial?.image_url ?? null);
 
   return (
     <div style={{ ...card, background: COLORS.cream, marginTop: 10 }}>
@@ -296,17 +300,49 @@ function ItemForm({
         </div>
       )}
 
+      <div style={{ ...fieldRow, marginTop: 4 }}>
+        <label style={label}>Photo (optional)</label>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          {imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={imageUrl}
+              alt=""
+              style={{ width: 96, height: 72, objectFit: "cover", borderRadius: 6, border: `1px solid ${COLORS.line}` }}
+            />
+          ) : (
+            <span style={{ fontSize: 13, color: COLORS.muted }}>No photo</span>
+          )}
+          <ImageUploader
+            path={`menu/${itemId}.webp`}
+            label={imageUrl ? "Replace photo" : "Upload photo"}
+            onUploaded={(url) => setImageUrl(url)}
+          />
+          {imageUrl && (
+            <button
+              type="button"
+              onClick={() => setImageUrl(null)}
+              style={{ ...btnGhost, minHeight: 36, padding: "6px 14px", fontSize: 13.5 }}
+            >
+              Remove
+            </button>
+          )}
+        </div>
+      </div>
+
       <div style={{ display: "flex", gap: 10 }}>
         <button
           style={{ ...btnPrimary, opacity: pending ? 0.6 : 1 }}
           disabled={pending}
           onClick={() =>
             onSave({
+              id: itemId,
               category_id: categoryId,
               name,
               price,
               description: description || undefined,
               sub: sub || undefined,
+              image_url: imageUrl,
               tags: tags
                 .split(",")
                 .map((t) => t.trim())

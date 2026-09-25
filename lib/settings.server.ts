@@ -28,6 +28,13 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
         override.hours && override.hours.length > 0
           ? override.hours
           : SETTINGS_DEFAULTS.hours,
+      whatsOn: {
+        intro: override.whatsOn?.intro ?? SETTINGS_DEFAULTS.whatsOn.intro,
+        cards:
+          override.whatsOn?.cards && override.whatsOn.cards.length > 0
+            ? override.whatsOn.cards
+            : SETTINGS_DEFAULTS.whatsOn.cards,
+      },
     };
   } catch {
     return SETTINGS_DEFAULTS;

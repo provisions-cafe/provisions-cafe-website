@@ -15,6 +15,7 @@ type ItemRow = {
   price: string | null;
   description: string | null;
   sub: string | null;
+  image_url: string | null;
   tags: string[] | null;
   is_highlight: boolean;
   highlight_group: string | null;
@@ -24,10 +25,12 @@ type ItemRow = {
 
 function mapItem(row: ItemRow): MenuItem {
   return {
+    id: row.id,
     name: row.name,
     price: row.price ?? "",
     desc: row.description ?? undefined,
     sub: row.sub ?? undefined,
+    imageUrl: row.image_url ?? undefined,
     tags: row.tags ?? [],
     isHighlight: row.is_highlight,
     highlightGroup: row.highlight_group ?? undefined,
@@ -56,7 +59,7 @@ export const getMenu = cache(async (): Promise<MenuCategory[]> => {
     const { data: items, error: itemErr } = await supabase
       .from("menu_items")
       .select(
-        "id, category_id, name, price, description, sub, tags, is_highlight, highlight_group, highlight_order, display_order",
+        "id, category_id, name, price, description, sub, image_url, tags, is_highlight, highlight_group, highlight_order, display_order",
       )
       .eq("is_published", true)
       .order("display_order", { ascending: true });

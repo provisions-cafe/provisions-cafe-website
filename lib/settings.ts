@@ -11,6 +11,17 @@ export type BusinessHour = {
   closed: boolean;
 };
 
+export type WhatsOnCard = {
+  title: string;
+  text: string;
+  /** "menu" = feature a menu item (photo/name/price from it); "custom" = own photo + text. */
+  mode?: "menu" | "custom";
+  /** Menu item to feature when mode is "menu" (menu_items id). */
+  menuItemId?: string | null;
+  /** Uploaded photo URL when mode is "custom" (media bucket). */
+  imageUrl?: string | null;
+};
+
 export type SiteSettings = {
   urls: {
     book: string;
@@ -40,6 +51,11 @@ export type SiteSettings = {
     telephoneE164: string;
   };
   hours: BusinessHour[];
+  /** Home-page "What's on / This week" section: intro line + cards. */
+  whatsOn: {
+    intro: string;
+    cards: WhatsOnCard[];
+  };
 };
 
 export const SETTINGS_DEFAULTS: SiteSettings = {
@@ -83,4 +99,13 @@ export const SETTINGS_DEFAULTS: SiteSettings = {
     { day: 6, label: "Saturday", time: "7am – 3pm", closed: false },
     { day: 0, label: "Sunday", time: "7am – 3pm", closed: false },
   ],
+  whatsOn: {
+    intro:
+      "Three lines to keep current. Swap the text whenever the specials or the hours change.",
+    cards: [
+      { title: "Today's specials", text: "What the kitchen is running today, and the price.", mode: "custom" },
+      { title: "Seasonal", text: "The dish or drink that only sticks around for a few weeks.", mode: "custom" },
+      { title: "Public holidays", text: "Any changed or closed days coming up. Normal hours are 7am to 3pm, seven days.", mode: "custom" },
+    ],
+  },
 };

@@ -110,6 +110,8 @@ export default function MediaManagerClient({
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                         <ImageUploader
+                          path={`slots/${slot.id.replace(/[^a-z0-9]+/gi, "-")}.webp`}
+                          label={overridden ? "Replace" : "Upload"}
                           onUploaded={(url) => run(() => setImageOverride(slot.id, url))}
                         />
                         {overridden && (

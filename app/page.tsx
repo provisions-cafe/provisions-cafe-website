@@ -9,7 +9,7 @@ import HoursTable from "@/components/HoursTable";
 import Hero from "@/components/home/Hero";
 import { MenuHeading, MenuItem } from "@/components/menu";
 import { getSettings } from "@/lib/settings.server";
-import { getHighlights } from "@/lib/menu.server";
+import { getHighlights, getMenu } from "@/lib/menu.server";
 import type { MenuItem as MenuItemData } from "@/lib/menu";
 import { getImages } from "@/lib/images.server";
 import { img } from "@/lib/images";
@@ -130,14 +130,19 @@ function HighlightGroup({
 }
 
 export default async function HomePage() {
-  const [settings, highlights, images] = await Promise.all([
+  const [settings, highlights, images, menu] = await Promise.all([
     getSettings(),
     getHighlights(),
     getImages(),
+    getMenu(),
   ]);
   const byGroup: Record<string, MenuItemData[]> = Object.fromEntries(
     highlights.map((h) => [h.group, h.items]),
   );
+  const itemsById = new Map<string, MenuItemData>();
+  for (const category of menu) {
+    for (const it of category.items) if (it.id) itemsById.set(it.id, it);
+  }
   return (
     <div style={{ position: "relative", maxWidth: "100%", overflowX: "clip" }}>
       <SiteHeader variant="hero" bookUrl={settings.urls.book} />
@@ -488,20 +493,35 @@ export default async function HomePage() {
                 This week at Provisions
               </h2>
               <p style={{ margin: 0, fontSize: 16.5, lineHeight: 1.6, color: "#6B564A", maxWidth: "54ch" }}>
-                Three lines to keep current. Swap the text whenever the specials or the hours change.
+                {settings.whatsOn.intro}
               </p>
             </div>
             <div data-reveal="true" style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
-              {[
-                ["Today's specials", "Placeholder — what the kitchen is running today, and the price."],
-                ["Seasonal", "Placeholder — the dish or drink that only sticks around for a few weeks."],
-                ["Public holidays", "Placeholder — any changed or closed days coming up. Normal hours are 7am to 3pm, seven days."],
-              ].map(([title, text]) => (
-                <div key={title} style={infoCard}>
-                  <h3 style={infoCardH3}>{title}</h3>
-                  <p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: "#8A5F22" }}>{text}</p>
-                </div>
-              ))}
+              {settings.whatsOn.cards.map((c) => {
+                const mode = c.mode ?? "custom";
+                const featured =
+                  mode === "menu" && c.menuItemId ? itemsById.get(c.menuItemId) : undefined;
+                const image = mode === "menu" ? featured?.imageUrl : c.imageUrl;
+                return (
+                  <div key={c.title} style={infoCard}>
+                    {image ? (
+                      <div style={{ position: "relative", aspectRatio: "3 / 2", borderRadius: 4, overflow: "hidden", marginBottom: 12, background: "#EDE4D4" }}>
+                        <ImageSlot src={image} placeholder={c.title} />
+                      </div>
+                    ) : null}
+                    <h3 style={infoCardH3}>{c.title}</h3>
+                    {featured ? (
+                      <p style={{ margin: "0 0 6px", fontFamily: "Petrona, Georgia, serif", fontSize: 18, color: "#1E4359" }}>
+                        {featured.name}
+                        {featured.price ? ` · ${featured.price}` : ""}
+                      </p>
+                    ) : null}
+                    {c.text ? (
+                      <p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: "#8A5F22" }}>{c.text}</p>
+                    ) : null}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
