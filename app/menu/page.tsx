@@ -5,7 +5,8 @@ import SiteFooter from "@/components/SiteFooter";
 import WaveDivider from "@/components/WaveDivider";
 import GullImg from "@/components/GullImg";
 import { MenuHeading, MenuItem, DietTag } from "@/components/menu";
-import { BOOK_URL, ORDER_URL } from "@/components/site-data";
+import { getMenu } from "@/lib/menu.server";
+import { getSettings } from "@/lib/settings.server";
 
 export const metadata: Metadata = {
   title: "Full menu",
@@ -54,10 +55,15 @@ const ctaGhost: CSSProperties = {
   textDecoration: "none",
 };
 
-export default function MenuPage() {
+export default async function MenuPage() {
+  const [menu, settings] = await Promise.all([getMenu(), getSettings()]);
+  const columns = [1, 2, 3].map((group) =>
+    menu.filter((category) => category.columnGroup === group),
+  );
+
   return (
     <div style={{ maxWidth: "100%", overflowX: "clip" }}>
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" bookUrl={settings.urls.book} />
 
       <main>
         <section
@@ -158,111 +164,31 @@ export default function MenuPage() {
               alignItems: "start",
             }}
           >
-            {/* Column 1 — breakfast */}
-            <div data-reveal="true" style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}>
-              <div>
-                <MenuHeading as="h2">Breakfast</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Toast" price="$11.50" desc="Butter, Vegemite or jam on your choice of sourdough, multigrain, wholemeal or white (GF optional)" />
-                  <MenuItem name="Eggs on Toast" price="$14.50" desc="Two eggs cooked your way on white sourdough or multigrain toast — add bacon +$3" />
-                  <MenuItem name="Avocado Smash" tags={["V", "GFA"]} price="$22.50" desc="Smashed avocado, garlic sautéed mushroom & spinach, feta, medley tomatoes, poached eggs, dukkha, balsamic glaze on bread" />
-                  <MenuItem name="Bruschetta" tags={["V", "GFA"]} price="$22.50" desc="Bocconcini, tomato, shallots, basil, garlic and herb toast" />
-                  <MenuItem name="Provisions Big Breakfast" price="$27.50" desc="Bacon, spinach & mushroom, grilled tomato, hashbrown, sausage, avocado and eggs your way, on choice of bread" />
-                  <MenuItem name="Beef Ragu Shakshuka" price="$24.50" desc="Chef's special oven-baked beefy shakshuka, bell pepper, two eggs in sauce, served with garlic pitta bread" />
-                  <MenuItem name="Smoked Salmon" price="$25.90" desc="Seared asparagus with smoked salmon gribiche on sourdough, poached eggs, hollandaise" />
-                  <MenuItem name="Provisions Breaksuka Burger" price="$24.50" desc="Homemade hashbrown, bacon, fried egg, caramelised onion, cheese, tomato relish, lettuce, in a brioche bun and fries" />
-                  <MenuItem name="Zucchini & Corn Fritters" tag="V" price="$23.50" desc="Rocket, parmesan & pear salad, avocado, tomato salsa, poached egg, lemon wedge & romesco" />
-                  <MenuItem name="Chilli Scrambled Eggs" price="$22.90" desc="Bacon, spring onions, fresh chilli, fried shallots, parmesan, on white toast" />
-                  <MenuItem name="Hash Stack" price="$23.50" desc="Two homemade potato rosti, crispy bacon, poached eggs, hollandaise and alfalfa sprouts — add salmon +$4" />
-                  <MenuItem name="Caesar Salad" price="$22.50" desc="Cos lettuce, crispy bacon, garlic croutons, poached egg, parmesan and Caesar dressing" />
-                  <MenuItem name="Pancakes" price="$22.50" desc="Two pancakes with fresh fruit & berries, maple syrup, vanilla ice cream and lemon balm" />
-                </div>
+            {columns.map((cats, colIndex) => (
+              <div
+                key={colIndex}
+                data-reveal="true"
+                style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}
+              >
+                {cats.map((cat) => (
+                  <div key={cat.slug}>
+                    <MenuHeading as="h2">{cat.name}</MenuHeading>
+                    <div style={{ display: "grid", gap: 16 }}>
+                      {cat.items.map((it) => (
+                        <MenuItem
+                          key={it.name}
+                          name={it.name}
+                          price={it.price}
+                          desc={it.desc}
+                          sub={it.sub}
+                          tags={it.tags}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-
-            {/* Column 2 — lunch: wraps, small plates, sandwiches & burgers */}
-            <div data-reveal="true" style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}>
-              <div>
-                <MenuHeading as="h2">Wraps &amp; Focaccia</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Chicken Wrap" price="$17.50" desc="Grilled chicken with lettuce, onion, tomato, tasty cheese and mayo" />
-                  <MenuItem name="Lamb Wrap" price="$18.50" desc="Pulled lamb with lettuce, onion, tomato and tzatziki" />
-                  <MenuItem name="Grilled Vegetable Focaccia" tag="V" price="$17.50" desc="Eggplant, capsicum, zucchini, caramelised onion, cheese and tomato relish" />
-                </div>
-              </div>
-
-              <div>
-                <MenuHeading as="h2">Small Plates</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Beef Arancini" price="$16.50" desc="Slow-cooked beef ragu, mozzarella, with tomato sugo" />
-                  <MenuItem name="Calamari Fritti" price="$18.50" desc="Served with rocket salad, lemon wedge and mayo" />
-                  <MenuItem name="Crispy Fried Chicken Ribs" price="$21.50" desc="Crispy fried chicken with coleslaw, sesame seed and hot sauce" />
-                </div>
-              </div>
-
-              <div>
-                <MenuHeading as="h2">Sandwiches &amp; Burgers</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Provisions Chicken Sandwich" price="$22.50" desc="Chicken, cheese, avocado, celery, spring onions and mayo" />
-                  <MenuItem name="Provisions Steak Sandwich" price="$25.50" desc="Beef strip loin, caramelised onion, red pepper, cheese, tomato relish, mustard mayo, lettuce, in a Turkish roll with chips" />
-                  <MenuItem name="Halloumi Burger" tag="V" price="$24.50" desc="Grilled halloumi, avocado, tomato, lettuce, caramelised onion, sweet chilli mayo, served with fries" />
-                  <MenuItem name="Chicken Burger" price="$24.50" desc="Crispy fried chicken, coleslaw, cheddar, sriracha mayo and fries — swap to grilled chicken on request" />
-                  <MenuItem name="Wagyu Cheeseburger" price="$24.50" desc="Beef patty, lettuce, tomato, pickled cucumber, caramelised onion, American cheese, burger sauce, chips" />
-                </div>
-              </div>
-            </div>
-
-            {/* Column 3 — mains, salads, sides, dessert, kids */}
-            <div data-reveal="true" style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}>
-              <div>
-                <MenuHeading as="h2">Mains</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Grilled Pork Sausage" price="$22.50" desc="Served with homemade potato rosti, shallots and red wine jus" />
-                  <MenuItem name="Chicken Parma" price="$22.50" desc="Homemade Napoli sauce, mozzarella, ham, side chips and garden salad" />
-                  <MenuItem name="Market Fish" tag="GF" price="$25.90" desc="Fresh market fish with chips and garden salad" />
-                  <MenuItem name="Butter Chicken" price="$25.50" desc="Butter-enriched tomato-creamy sauce with onion, almond and cashew nuts, served with rice and pita bread" />
-                  <MenuItem name="Vegetarian Lasagne" tag="V" price="$21.50" desc="Pumpkin, zucchini, mushroom, spinach, onion, herbed béchamel and side salad" />
-                  <MenuItem name="Beef Lasagne" price="$25.50" desc="Beef bolognese ragu with creamy béchamel and shaved parmesan on top" />
-                </div>
-              </div>
-
-              <div>
-                <MenuHeading as="h2">Salads</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Pulled Lamb Salad" price="$23.50" desc="Rocket, spinach, lentils, cherry tomatoes, onion, feta, with lemon mustard dressing" />
-                  <MenuItem name="Grilled Chicken Salad" price="$23.50" desc="Mixed leaf salad, tomato, onion, radish, croutons with lemon dressing" />
-                  <MenuItem name="Calamari Salad" price="$23.50" desc="Mixed leaf, cherry tomatoes, cucumber, lemon wedge, with house-made dressing" />
-                </div>
-              </div>
-
-              <div>
-                <MenuHeading as="h2">Sides</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Beer Battered Potato Wedges" price="$12.50" desc="Served with sour cream and sweet chilli sauce" />
-                  <MenuItem name="Chips" price="$10.50" desc="With tomato ketchup" />
-                </div>
-              </div>
-
-              <div>
-                <MenuHeading as="h2">Dessert</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Crème Brûlée" price="$16.50" />
-                  <MenuItem name="Apple & Rhubarb Crumble" price="$16.50" desc="Served with vanilla ice cream" />
-                </div>
-              </div>
-
-              <div>
-                <MenuHeading as="h2">Kids Meal</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem name="Cheese Toast" price="$9.50" />
-                  <MenuItem name="Chicken Popcorn & Chips" price="$12.50" />
-                  <MenuItem name="Pancake" price="$12.50" desc="Fresh seasonal fruits and berries, vanilla ice cream and maple syrup" />
-                  <MenuItem name="Kids Burger" price="$14.50" desc="Beef patty with chips and tomato sauce" />
-                  <MenuItem name="Fish & Chips" price="$14.50" desc="Beer battered fish with chips and tomato sauce" />
-                  <MenuItem name="Kids Pasta" price="$14.50" desc="Spaghetti with beef bolognese and parmesan" />
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
 
           <p
@@ -298,10 +224,10 @@ export default function MenuPage() {
               Takeaway and delivery run until 2:30pm.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              <a href={ORDER_URL} target="_blank" rel="noopener" className="hv-bay" style={ctaBay}>
+              <a href={settings.urls.order} target="_blank" rel="noopener" className="hv-bay" style={ctaBay}>
                 Order online
               </a>
-              <a href={BOOK_URL} target="_blank" rel="noopener" className="hv-ghost-dark" style={ctaGhost}>
+              <a href={settings.urls.book} target="_blank" rel="noopener" className="hv-ghost-dark" style={ctaGhost}>
                 Book a table
               </a>
             </div>

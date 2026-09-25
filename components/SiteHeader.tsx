@@ -48,8 +48,11 @@ const ctaBase: CSSProperties = {
 
 export default function SiteHeader({
   variant = "solid",
+  bookUrl = BOOK_URL,
 }: {
   variant?: "solid" | "hero";
+  /** Booking URL; defaults to the code value. Pass settings.urls.book to make it DB-editable. */
+  bookUrl?: string;
 }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -158,7 +161,7 @@ export default function SiteHeader({
             );
           })}
           <a
-            href={BOOK_URL}
+            href={bookUrl}
             target="_blank"
             rel="noopener"
             className={solid ? "hv-bay" : "hv-gold"}
@@ -302,7 +305,7 @@ export default function SiteHeader({
               );
             })}
             <a
-              href={BOOK_URL}
+              href={bookUrl}
               target="_blank"
               rel="noopener"
               onClick={() => setMenuOpen(false)}

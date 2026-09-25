@@ -8,15 +8,11 @@ import ImageSlot from "@/components/ImageSlot";
 import HoursTable from "@/components/HoursTable";
 import Hero from "@/components/home/Hero";
 import { MenuHeading, MenuItem } from "@/components/menu";
-import {
-  BOOK_URL,
-  ORDER_URL,
-  DIRECTIONS_URL,
-  REVIEWS_URL,
-  MAP_EMBED_URL,
-  PHONE_DISPLAY,
-  PHONE_HREF,
-} from "@/components/site-data";
+import { getSettings } from "@/lib/settings.server";
+import { getHighlights } from "@/lib/menu.server";
+import type { MenuItem as MenuItemData } from "@/lib/menu";
+import { getImages } from "@/lib/images.server";
+import { img } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: {
@@ -102,13 +98,52 @@ function GoogleMark() {
   );
 }
 
-export default function HomePage() {
+/** One home-page highlight group (renders nothing if it has no items). */
+function HighlightGroup({
+  title,
+  items,
+  showDesc = false,
+  gap = 14,
+}: {
+  title: string;
+  items: MenuItemData[];
+  showDesc?: boolean;
+  gap?: number;
+}) {
+  if (items.length === 0) return null;
+  return (
+    <div>
+      <MenuHeading>{title}</MenuHeading>
+      <div style={{ display: "grid", gap }}>
+        {items.map((it) => (
+          <MenuItem
+            key={it.name}
+            name={it.name}
+            price={it.price}
+            desc={showDesc ? it.desc : undefined}
+            tags={it.tags}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default async function HomePage() {
+  const [settings, highlights, images] = await Promise.all([
+    getSettings(),
+    getHighlights(),
+    getImages(),
+  ]);
+  const byGroup: Record<string, MenuItemData[]> = Object.fromEntries(
+    highlights.map((h) => [h.group, h.items]),
+  );
   return (
     <div style={{ position: "relative", maxWidth: "100%", overflowX: "clip" }}>
-      <SiteHeader variant="hero" />
+      <SiteHeader variant="hero" bookUrl={settings.urls.book} />
 
       <main id="top">
-        <Hero />
+        <Hero bookUrl={settings.urls.book} orderUrl={settings.urls.order} images={images} />
 
         <WaveDivider />
 
@@ -170,7 +205,7 @@ export default function HomePage() {
             }}
           >
             <div data-reveal="true" style={{ position: "relative", aspectRatio: "5 / 4", borderRadius: 6, overflow: "hidden", background: "#EDE4D4" }}>
-              <ImageSlot src="/uploads/dining-room.webp" placeholder="The dining room — blue walls, timber floors" />
+              <ImageSlot src={img(images, "home.section.dining")} placeholder="The dining room — blue walls, timber floors" />
             </div>
             <div data-reveal="true">
               <h2 style={h2Bay}>Our place</h2>
@@ -243,7 +278,7 @@ export default function HomePage() {
               <h2 style={{ ...h2Bay, margin: 0, fontSize: "clamp(30px, 4.2vw, 46px)" }}>4.4★ · 269 reviews</h2>
             </div>
             <a
-              href={REVIEWS_URL}
+              href={settings.urls.reviews}
               target="_blank"
               rel="noopener"
               className="hv-ghost-dark"
@@ -380,50 +415,17 @@ export default function HomePage() {
 
           <div style={{ display: "grid", gap: "clamp(28px, 4vw, 48px)", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", alignItems: "start" }}>
             <div data-reveal="true" style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}>
-              <div>
-                <MenuHeading>Breakfast</MenuHeading>
-                <div style={{ display: "grid", gap: 16 }}>
-                  <MenuItem
-                    name="Provisions Big Breakfast"
-                    price="$27.50"
-                    desc="Bacon, spinach & mushroom, grilled tomato, hashbrown, sausage, avocado and eggs your way — house favourite"
-                  />
-                  <MenuItem
-                    name="Beef Ragu Shakshuka"
-                    price="$24.50"
-                    desc="Chef's oven-baked beefy shakshuka, bell pepper, two eggs in sauce, served with garlic pitta bread"
-                  />
-                </div>
-              </div>
-              <div>
-                <MenuHeading>Lunch</MenuHeading>
-                <div style={{ display: "grid", gap: 14 }}>
-                  <MenuItem name="Butter Chicken" price="$25.50" />
-                  <MenuItem name="Beef Lasagne" price="$25.50" />
-                  <MenuItem name="Market Fish" tag="GF" price="$25.90" />
-                </div>
-              </div>
+              <HighlightGroup title="Breakfast" items={byGroup["Breakfast"] ?? []} showDesc gap={16} />
+              <HighlightGroup title="Lunch" items={byGroup["Lunch"] ?? []} />
             </div>
 
             <div data-reveal="true" style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}>
               <div style={{ position: "relative", aspectRatio: "3 / 2", borderRadius: 6, overflow: "hidden", background: "#EDE4D4" }}>
-                <ImageSlot src="/uploads/lunch.webp" placeholder="Toasties, cake and a bottle" />
+                <ImageSlot src={img(images, "home.section.menu")} placeholder="Toasties, cake and a bottle" />
               </div>
-              <div>
-                <MenuHeading>Burgers &amp; sandwiches</MenuHeading>
-                <div style={{ display: "grid", gap: 14 }}>
-                  <MenuItem name="Wagyu Cheeseburger" price="$24.50" />
-                  <MenuItem name="Provisions Steak Sandwich" price="$25.50" />
-                </div>
-              </div>
-              <div>
-                <MenuHeading>Sweet</MenuHeading>
-                <MenuItem name="Crème Brûlée" price="$16.50" />
-              </div>
-              <div>
-                <MenuHeading>Little ones</MenuHeading>
-                <MenuItem name="Kids Burger" price="$14.50" />
-              </div>
+              <HighlightGroup title="Burgers & sandwiches" items={byGroup["Burgers & sandwiches"] ?? []} />
+              <HighlightGroup title="Sweet" items={byGroup["Sweet"] ?? []} />
+              <HighlightGroup title="Little ones" items={byGroup["Little ones"] ?? []} />
             </div>
           </div>
 
@@ -445,7 +447,7 @@ export default function HomePage() {
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               <a
-                href={ORDER_URL}
+                href={settings.urls.order}
                 target="_blank"
                 rel="noopener"
                 className="hv-bay"
@@ -454,11 +456,11 @@ export default function HomePage() {
                 Order online
               </a>
               <a
-                href={PHONE_HREF}
+                href={settings.contact.phoneHref}
                 className="hv-ghost-dark"
                 style={{ display: "inline-block", padding: "14px 24px", borderRadius: 999, border: "1.5px solid rgba(30,67,89,.35)", color: "#1E4359", fontSize: 16, fontWeight: 600, textDecoration: "none" }}
               >
-                Call {PHONE_DISPLAY}
+                Call {settings.contact.phoneDisplay}
               </a>
             </div>
           </div>
@@ -607,20 +609,20 @@ export default function HomePage() {
                 Williamstown VIC 3016
               </p>
               <p style={{ margin: "0 0 22px" }}>
-                <a href={DIRECTIONS_URL} target="_blank" rel="noopener" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontSize: 16, color: "#E9C98E" }}>
+                <a href={settings.urls.directions} target="_blank" rel="noopener" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontSize: 16, color: "#E9C98E" }}>
                   Get directions
                 </a>
               </p>
 
               <p style={blueEyebrow}>Phone</p>
               <p style={{ margin: "0 0 24px", fontSize: 19 }}>
-                <a href={PHONE_HREF} style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#F1E9DA" }}>
-                  {PHONE_DISPLAY}
+                <a href={settings.contact.phoneHref} style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#F1E9DA" }}>
+                  {settings.contact.phoneDisplay}
                 </a>
               </p>
 
               <a
-                href={BOOK_URL}
+                href={settings.urls.book}
                 target="_blank"
                 rel="noopener"
                 className="hv-gold"
@@ -632,7 +634,7 @@ export default function HomePage() {
 
             <div data-reveal="true">
               <p style={{ ...blueEyebrow, margin: "0 0 14px" }}>Opening hours</p>
-              <HoursTable />
+              <HoursTable hours={settings.hours} />
               <p style={{ margin: "18px 0 0", fontSize: 15.5, lineHeight: 1.6, color: "rgba(241,233,218,.72)", maxWidth: "40ch" }}>
                 Kitchen, takeaway and online orders until 2:30pm.
               </p>
@@ -668,7 +670,7 @@ export default function HomePage() {
                 The parking situation in your own words — street parking on Ferguson St, time limits, the nearest side streets, and where to go on a busy weekend.
               </p>
               <a
-                href={DIRECTIONS_URL}
+                href={settings.urls.directions}
                 target="_blank"
                 rel="noopener"
                 className="hv-bay"
@@ -680,7 +682,7 @@ export default function HomePage() {
             <div data-reveal="true" style={{ borderRadius: 6, overflow: "hidden", border: "1px solid rgba(58,43,34,.15)", background: "#EDE4D4" }}>
               <iframe
                 title="Map of Provisions Cafe, 62–64 Ferguson St, Williamstown"
-                src={MAP_EMBED_URL}
+                src={settings.urls.mapEmbed}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 style={{ display: "block", width: "100%", height: "clamp(280px, 42vw, 400px)", border: 0 }}

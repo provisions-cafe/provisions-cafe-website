@@ -1,13 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import {
-  NAV_ITEMS,
-  BOOK_URL,
-  ORDER_URL,
-  DIRECTIONS_URL,
-  PHONE_DISPLAY,
-  PHONE_HREF,
-} from "./site-data";
+import { NAV_ITEMS } from "./site-data";
+import { getSettings } from "@/lib/settings.server";
 
 const footerLink: CSSProperties = {
   display: "inline-flex",
@@ -55,11 +49,12 @@ function Wave({
   );
 }
 
-export default function SiteFooter({
+export default async function SiteFooter({
   withAnchor = false,
 }: {
   withAnchor?: boolean;
 }) {
+  const settings = await getSettings();
   return (
     <footer
       style={{
@@ -157,10 +152,10 @@ export default function SiteFooter({
               Provisions Cafe
             </p>
             <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.6 }}>
-              62–64 Ferguson St, Williamstown VIC 3016
+              {settings.contact.addressLine1}, {settings.contact.addressLine2}
               <br />
-              <a href={PHONE_HREF} style={{ color: "#E9C98E" }}>
-                {PHONE_DISPLAY}
+              <a href={settings.contact.phoneHref} style={{ color: "#E9C98E" }}>
+                {settings.contact.phoneDisplay}
               </a>
             </p>
           </div>
@@ -174,14 +169,14 @@ export default function SiteFooter({
           </nav>
 
           <div style={{ display: "grid", gap: 2, justifyItems: "start" }}>
-            <a href={BOOK_URL} target="_blank" rel="noopener" style={footerLink}>
+            <a href={settings.urls.book} target="_blank" rel="noopener" style={footerLink}>
               Book a table
             </a>
-            <a href={ORDER_URL} target="_blank" rel="noopener" style={footerLink}>
+            <a href={settings.urls.order} target="_blank" rel="noopener" style={footerLink}>
               Order online
             </a>
             <a
-              href={DIRECTIONS_URL}
+              href={settings.urls.directions}
               target="_blank"
               rel="noopener"
               style={footerLink}

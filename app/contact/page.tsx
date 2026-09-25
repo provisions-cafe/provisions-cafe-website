@@ -7,13 +7,7 @@ import WaveDivider from "@/components/WaveDivider";
 import GullImg from "@/components/GullImg";
 import HoursTable from "@/components/HoursTable";
 import EnquiryForm from "@/components/EnquiryForm";
-import {
-  BOOK_URL,
-  DIRECTIONS_URL,
-  MAP_EMBED_URL,
-  PHONE_DISPLAY,
-  PHONE_HREF,
-} from "@/components/site-data";
+import { getSettings } from "@/lib/settings.server";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -40,10 +34,11 @@ const sectionH2: CSSProperties = {
   color: "#1E4359",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSettings();
   return (
     <div style={{ maxWidth: "100%", overflowX: "clip" }}>
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" bookUrl={settings.urls.book} />
 
       <main>
         <section
@@ -142,26 +137,26 @@ export default function ContactPage() {
             <div data-reveal="true">
               <p style={blueEyebrow}>Address</p>
               <p style={{ margin: "0 0 8px", fontSize: 19, lineHeight: 1.5, color: "#F1E9DA" }}>
-                62–64 Ferguson St
+                {settings.contact.addressLine1}
                 <br />
-                Williamstown VIC 3016
+                {settings.contact.addressLine2}
               </p>
               <p style={{ margin: "0 0 22px" }}>
-                <a href={DIRECTIONS_URL} target="_blank" rel="noopener" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontSize: 16, color: "#E9C98E" }}>
+                <a href={settings.urls.directions} target="_blank" rel="noopener" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontSize: 16, color: "#E9C98E" }}>
                   Get directions
                 </a>
               </p>
 
               <p style={blueEyebrow}>Phone</p>
               <p style={{ margin: "0 0 22px", fontSize: 19 }}>
-                <a href={PHONE_HREF} style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#F1E9DA" }}>
-                  {PHONE_DISPLAY}
+                <a href={settings.contact.phoneHref} style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#F1E9DA" }}>
+                  {settings.contact.phoneDisplay}
                 </a>
               </p>
 
               <p style={blueEyebrow}>Bookings</p>
               <a
-                href={BOOK_URL}
+                href={settings.urls.book}
                 target="_blank"
                 rel="noopener"
                 className="hv-gold"
@@ -184,7 +179,7 @@ export default function ContactPage() {
 
             <div data-reveal="true">
               <p style={{ ...blueEyebrow, margin: "0 0 14px" }}>Opening hours</p>
-              <HoursTable />
+              <HoursTable hours={settings.hours} />
               <p style={{ margin: "18px 0 0", fontSize: 15.5, lineHeight: 1.6, color: "rgba(241,233,218,.72)", maxWidth: "40ch" }}>
                 Kitchen, takeaway and online orders until 2:30pm.
               </p>
@@ -236,7 +231,7 @@ export default function ContactPage() {
             >
               <iframe
                 title="Map of Provisions Cafe, 62–64 Ferguson St, Williamstown"
-                src={MAP_EMBED_URL}
+                src={settings.urls.mapEmbed}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 style={{ display: "block", width: "100%", height: "clamp(280px, 42vw, 400px)", border: 0 }}

@@ -1,10 +1,16 @@
-import { BUSINESS, SITE_URL, BOOK_URL } from "./site-data";
+import { SITE_URL } from "./site-data";
+import { getSettings } from "@/lib/settings.server";
 
 /**
  * schema.org LocalBusiness (CafeOrCoffeeShop) JSON-LD. Feeds Google's rich
  * results / local pack: address, geo, hours, price, rating, menu, reservations.
+ * Business facts + booking URL come from getSettings() (DB-editable); openingHours
+ * stays static (the visible per-day hours live in the footer / HoursTable).
  */
-export default function StructuredData() {
+export default async function StructuredData() {
+  const settings = await getSettings();
+  const BUSINESS = settings.business;
+  const BOOK_URL = settings.urls.book;
   const data = {
     "@context": "https://schema.org",
     "@type": "CafeOrCoffeeShop",

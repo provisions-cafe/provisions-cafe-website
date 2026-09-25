@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
+import { getSettings } from "@/lib/settings.server";
+import { getImages } from "@/lib/images.server";
 import SiteFooter from "@/components/SiteFooter";
 import WaveDivider from "@/components/WaveDivider";
 import GullImg from "@/components/GullImg";
@@ -12,10 +14,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gallery" },
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const [settings, images] = await Promise.all([getSettings(), getImages()]);
   return (
     <div style={{ maxWidth: "100%", overflowX: "clip" }}>
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" bookUrl={settings.urls.book} />
 
       <main>
         <section
@@ -80,7 +83,7 @@ export default function GalleryPage() {
 
         <WaveDivider />
 
-        <GalleryGrid />
+        <GalleryGrid images={images} />
       </main>
 
       <SiteFooter />

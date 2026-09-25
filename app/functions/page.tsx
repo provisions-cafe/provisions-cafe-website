@@ -6,7 +6,9 @@ import WaveDivider from "@/components/WaveDivider";
 import GullImg from "@/components/GullImg";
 import ImageSlot from "@/components/ImageSlot";
 import EnquiryForm from "@/components/EnquiryForm";
-import { PHONE_DISPLAY, PHONE_HREF } from "@/components/site-data";
+import { getSettings } from "@/lib/settings.server";
+import { getImages } from "@/lib/images.server";
+import { img } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Functions & catering",
@@ -98,10 +100,11 @@ const btnGhostDark: CSSProperties = {
   textDecoration: "none",
 };
 
-export default function FunctionsPage() {
+export default async function FunctionsPage() {
+  const [settings, images] = await Promise.all([getSettings(), getImages()]);
   return (
     <div style={{ maxWidth: "100%", overflowX: "clip" }}>
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" bookUrl={settings.urls.book} />
 
       <main>
         <section
@@ -167,8 +170,8 @@ export default function FunctionsPage() {
               data-anim="1"
               style={{ display: "flex", flexWrap: "wrap", gap: 12, animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .4s both" }}
             >
-              <a href={PHONE_HREF} className="hv-bay" style={btnBay}>
-                Call {PHONE_DISPLAY}
+              <a href={settings.contact.phoneHref} className="hv-bay" style={btnBay}>
+                Call {settings.contact.phoneDisplay}
               </a>
               <a href="#enquire" className="hv-ghost-dark" style={btnGhostDark}>
                 Send an enquiry
@@ -190,7 +193,7 @@ export default function FunctionsPage() {
                 boxShadow: "0 18px 40px -28px rgba(58,43,34,.5)",
               }}
             >
-              <ImageSlot src="/uploads/dining-prints.webp" placeholder="A long table set up for a group" />
+              <ImageSlot src={img(images, "functions.feature")} placeholder="A long table set up for a group" />
             </div>
           </div>
         </section>
@@ -291,8 +294,8 @@ export default function FunctionsPage() {
               Phone
             </p>
             <p style={{ margin: "0 0 20px", fontSize: 19 }}>
-              <a href={PHONE_HREF} style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#1E4359" }}>
-                {PHONE_DISPLAY}
+              <a href={settings.contact.phoneHref} style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#1E4359" }}>
+                {settings.contact.phoneDisplay}
               </a>
             </p>
             <p

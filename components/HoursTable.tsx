@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import { HOURS, HOURS_TIME } from "./site-data";
+import type { BusinessHour } from "@/lib/settings";
 
 /**
  * Opening-hours table that highlights today's row. The day is read after mount
  * (in the visitor's own timezone) so server and client markup stay in sync.
+ * `hours` comes from getSettings() (DB-editable, per-day), passed in by the
+ * server page that renders this.
  */
-export default function HoursTable() {
+export default function HoursTable({ hours }: { hours: BusinessHour[] }) {
   const [today, setToday] = useState<number | null>(null);
   useEffect(() => setToday(new Date().getDay()), []);
 
@@ -21,9 +23,9 @@ export default function HoursTable() {
       }}
     >
       <tbody>
-        {HOURS.map(([day, label], i) => {
-          const isToday = today === day;
-          const last = i === HOURS.length - 1;
+        {hours.map((h, i) => {
+          const isToday = today === h.day;
+          const last = i === hours.length - 1;
           const border = last ? undefined : "1px solid rgba(241,233,218,.16)";
           const cell: CSSProperties = {
             padding: "11px 0",
@@ -32,7 +34,7 @@ export default function HoursTable() {
             fontWeight: isToday ? 600 : undefined,
           };
           return (
-            <tr key={day}>
+            <tr key={h.day}>
               <th
                 scope="row"
                 style={{
@@ -41,10 +43,12 @@ export default function HoursTable() {
                   fontWeight: isToday ? 600 : 400,
                 }}
               >
-                {label}
+                {h.label}
                 {isToday ? " · today" : ""}
               </th>
-              <td style={{ ...cell, textAlign: "right" }}>{HOURS_TIME}</td>
+              <td style={{ ...cell, textAlign: "right" }}>
+                {h.closed ? "Closed" : h.time}
+              </td>
             </tr>
           );
         })}

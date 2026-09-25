@@ -3,22 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import ImageSlot from "@/components/ImageSlot";
 import { BOOK_URL, ORDER_URL } from "@/components/site-data";
-
-// The hero cross-fades through a set of the cafe's own photos.
-const SLIDES = [
-  {
-    src: "/uploads/dining-room.webp",
-    alt: "The dining room — blue walls and warm timber floors",
-  },
-  {
-    src: "/uploads/storefront.webp",
-    alt: "Provisions Cafe storefront on Ferguson St",
-  },
-  { src: "/uploads/coffee.webp", alt: "Coffee with latte art" },
-  { src: "/uploads/food-plates.webp", alt: "Toasties and cake on the table" },
-  { src: "/uploads/counter.webp", alt: "The counter, mid-morning" },
-  { src: "/uploads/bar.webp", alt: "The dining room and counter" },
-];
+import { HERO_SLIDES, HERO_TILES, img } from "@/lib/images";
 
 const GULLS = [
   {
@@ -143,7 +128,15 @@ const tileBase: CSSProperties = {
   background: "rgba(20,40,55,.3)",
 };
 
-export default function Hero() {
+export default function Hero({
+  bookUrl = BOOK_URL,
+  orderUrl = ORDER_URL,
+  images,
+}: {
+  bookUrl?: string;
+  orderUrl?: string;
+  images: Record<string, string>;
+}) {
   const [slide, setSlide] = useState(0);
   const pauseUntil = useRef(0);
 
@@ -151,7 +144,7 @@ export default function Hero() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const t = setInterval(() => {
       if (Date.now() < pauseUntil.current) return;
-      setSlide((i) => (i + 1) % SLIDES.length);
+      setSlide((i) => (i + 1) % HERO_SLIDES.length);
     }, 5000);
     return () => clearInterval(t);
   }, []);
@@ -174,9 +167,9 @@ export default function Hero() {
     >
       {/* Cross-fading background photos + tint */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-        {SLIDES.map((s, i) => (
+        {HERO_SLIDES.map((s, i) => (
           <div
-            key={s.src}
+            key={s.id}
             style={{
               position: "absolute",
               inset: 0,
@@ -185,7 +178,7 @@ export default function Hero() {
               transition: "opacity 1.4s ease",
             }}
           >
-            <ImageSlot src={s.src} placeholder={s.alt} />
+            <ImageSlot src={img(images, s.id)} placeholder={s.label} />
           </div>
         ))}
         <div
@@ -382,7 +375,7 @@ export default function Hero() {
             }}
           >
             <a
-              href={BOOK_URL}
+              href={bookUrl}
               target="_blank"
               rel="noopener"
               className="hv-gold"
@@ -402,7 +395,7 @@ export default function Hero() {
               Book a table
             </a>
             <a
-              href={ORDER_URL}
+              href={orderUrl}
               target="_blank"
               rel="noopener"
               className="hv-ghost-light"
@@ -438,9 +431,9 @@ export default function Hero() {
             animation: "rise-in .8s cubic-bezier(.22,.7,.3,1) .82s both",
           }}
         >
-          {SLIDES.map((s, i) => (
+          {HERO_SLIDES.map((s, i) => (
             <button
-              key={s.src}
+              key={s.id}
               type="button"
               aria-label={`Show hero photo ${i + 1}`}
               aria-current={i === slide}
@@ -489,7 +482,7 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/coffee-table.webp"
+              src={img(images, "home.hero.tile.1")}
               placeholder="Coffee on the table"
             />
           </div>
@@ -502,7 +495,7 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/dining-hall.webp"
+              src={img(images, "home.hero.tile.2")}
               placeholder="The dining room"
             />
           </div>
@@ -514,7 +507,7 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/counter.webp"
+              src={img(images, "home.hero.tile.3")}
               placeholder="The counter — coffee and cabinet"
             />
           </div>
@@ -527,7 +520,7 @@ export default function Hero() {
             }}
           >
             <ImageSlot
-              src="/uploads/display-cabinet.webp"
+              src={img(images, "home.hero.tile.4")}
               placeholder="Cakes in the cabinet"
             />
           </div>

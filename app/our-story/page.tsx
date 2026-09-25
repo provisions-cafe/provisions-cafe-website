@@ -5,7 +5,9 @@ import SiteFooter from "@/components/SiteFooter";
 import WaveDivider from "@/components/WaveDivider";
 import GullImg from "@/components/GullImg";
 import ImageSlot from "@/components/ImageSlot";
-import { BOOK_URL } from "@/components/site-data";
+import { getSettings } from "@/lib/settings.server";
+import { getImages } from "@/lib/images.server";
+import { img } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Our story",
@@ -75,10 +77,11 @@ const ctaGhostLight: CSSProperties = {
   textDecoration: "none",
 };
 
-export default function OurStoryPage() {
+export default async function OurStoryPage() {
+  const [settings, images] = await Promise.all([getSettings(), getImages()]);
   return (
     <div style={{ maxWidth: "100%", overflowX: "clip" }}>
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" bookUrl={settings.urls.book} />
 
       <main>
         <section
@@ -152,7 +155,7 @@ export default function OurStoryPage() {
                 animation: "float-y 13s ease-in-out 1.4s infinite",
               }}
             >
-              <ImageSlot src="/uploads/mural.webp" placeholder="The room — blue walls, timber, window bar" />
+              <ImageSlot src={img(images, "our-story.feature")} placeholder="The room — blue walls, timber, window bar" />
             </div>
           </div>
         </section>
@@ -292,7 +295,7 @@ export default function OurStoryPage() {
               62–64 Ferguson St, Williamstown. Open 7am to 3pm, seven days. Walk in, or book ahead for the weekend.
             </p>
             <div data-reveal="true" style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              <a href={BOOK_URL} target="_blank" rel="noopener" className="hv-gold" style={ctaGold}>
+              <a href={settings.urls.book} target="_blank" rel="noopener" className="hv-gold" style={ctaGold}>
                 Book a table
               </a>
               <a href="/#find" className="hv-ghost-light" style={ctaGhostLight}>

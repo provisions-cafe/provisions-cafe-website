@@ -2,46 +2,7 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import ImageSlot from "@/components/ImageSlot";
-
-type Tile = { id: string; src: string; placeholder: string; label: string };
-type Group = { title: string; aspect: string; tiles: Tile[] };
-
-const GROUPS: Group[] = [
-  {
-    title: "The space",
-    aspect: "3 / 2",
-    tiles: [
-      { id: "gal-space-1", src: "/uploads/mural.webp", placeholder: "The Provisions mural", label: "The space — the Provisions seagull mural" },
-      { id: "gal-space-2", src: "/uploads/dining-hall.webp", placeholder: "The dining room", label: "The space — the dining room and mural" },
-      { id: "gal-space-3", src: "/uploads/bar.webp", placeholder: "The room and counter", label: "The space — the room looking to the counter" },
-      { id: "gal-space-4", src: "/uploads/dining-prints.webp", placeholder: "Coastal prints on the wall", label: "The space — coastal prints along the wall" },
-      { id: "gal-space-5", src: "/uploads/corner-nook.webp", placeholder: "The window bar", label: "The space — the window bar and stools" },
-      { id: "gal-space-6", src: "/uploads/sign.webp", placeholder: "The Provisions sign", label: "The space — the Provisions sign" },
-    ],
-  },
-  {
-    title: "The food & coffee",
-    aspect: "1 / 1",
-    tiles: [
-      { id: "gal-food-1", src: "/uploads/coffee.webp", placeholder: "Coffee, latte art", label: "The food — coffee with latte art" },
-      { id: "gal-food-2", src: "/uploads/coffee-table.webp", placeholder: "Coffee on the table", label: "The food — coffee on the table" },
-      { id: "gal-food-3", src: "/uploads/brunch.webp", placeholder: "Coffee and toasties", label: "The food — coffee and toasties" },
-      { id: "gal-food-4", src: "/uploads/food-plates.webp", placeholder: "Toasties and cake", label: "The food — toasties and cake" },
-      { id: "gal-food-5", src: "/uploads/lunch.webp", placeholder: "Lunch on the table", label: "The food — lunch on the table" },
-      { id: "gal-food-6", src: "/uploads/display-cabinet.webp", placeholder: "The cabinet", label: "The food — the display cabinet" },
-    ],
-  },
-  {
-    title: "The team & the street",
-    aspect: "3 / 2",
-    tiles: [
-      { id: "gal-hood-1", src: "/uploads/storefront.webp", placeholder: "Storefront, Ferguson St", label: "The street — the storefront on Ferguson St" },
-      { id: "gal-hood-2", src: "/uploads/outdoor.webp", placeholder: "Out the front", label: "The street — seating out the front" },
-      { id: "gal-hood-3", src: "/uploads/barista.webp", placeholder: "On the machine", label: "The team — coffee on the machine" },
-      { id: "gal-hood-4", src: "/uploads/team.webp", placeholder: "Behind the counter", label: "The team — behind the counter" },
-    ],
-  },
-];
+import { GALLERY_GROUPS, img } from "@/lib/images";
 
 const groupHeading: CSSProperties = {
   margin: "0 0 18px",
@@ -72,7 +33,11 @@ const enlargeBtn: CSSProperties = {
   cursor: "pointer",
 };
 
-export default function GalleryGrid() {
+export default function GalleryGrid({
+  images,
+}: {
+  images: Record<string, string>;
+}) {
   const [open, setOpen] = useState<{ src: string; placeholder: string; label: string } | null>(
     null,
   );
@@ -107,7 +72,7 @@ export default function GalleryGrid() {
           style={{ position: "absolute", zIndex: -1, left: -90, bottom: "4%", width: "min(34vw, 300px)", opacity: 0.32, transform: "rotate(-7deg)", pointerEvents: "none" }}
         />
 
-        {GROUPS.map((group) => (
+        {GALLERY_GROUPS.map((group) => (
           <div key={group.title} data-reveal="true">
             <h2 style={groupHeading}>{group.title}</h2>
             <div style={{ display: "grid", gap: 14, gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
@@ -122,11 +87,11 @@ export default function GalleryGrid() {
                     background: "#EDE4D4",
                   }}
                 >
-                  <ImageSlot src={tile.src} placeholder={tile.placeholder} />
+                  <ImageSlot src={img(images, tile.id)} placeholder={tile.placeholder} />
                   <button
                     type="button"
                     className="hv-enlarge"
-                    onClick={() => setOpen({ src: tile.src, placeholder: tile.placeholder, label: tile.label })}
+                    onClick={() => setOpen({ src: img(images, tile.id), placeholder: tile.placeholder, label: tile.label })}
                     style={enlargeBtn}
                   >
                     Enlarge
