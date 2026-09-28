@@ -90,7 +90,7 @@ export default function GalleryGrid({
                     background: "#EDE4D4",
                   }}
                 >
-                  <ImageSlot src={img(images, tile.id)} placeholder={tile.placeholder} />
+                  <ImageSlot src={img(images, tile.id)} placeholder={tile.placeholder} sizes="(max-width: 640px) 100vw, (max-width: 1120px) 50vw, 360px" />
                   <button
                     type="button"
                     className="hv-enlarge"

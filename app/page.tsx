@@ -210,7 +210,7 @@ export default async function HomePage() {
             }}
           >
             <div data-reveal="true" style={{ position: "relative", aspectRatio: "5 / 4", borderRadius: 6, overflow: "hidden", background: "#EDE4D4" }}>
-              <ImageSlot src={img(images, "home.section.dining")} placeholder="The dining room — blue walls, timber floors" />
+              <ImageSlot src={img(images, "home.section.dining")} placeholder="The dining room — blue walls, timber floors" sizes="(max-width: 900px) 100vw, 50vw" />
             </div>
             <div data-reveal="true">
               <h2 style={h2Bay}>Our place</h2>
@@ -426,7 +426,7 @@ export default async function HomePage() {
 
             <div data-reveal="true" style={{ display: "grid", gap: "clamp(28px, 4vw, 40px)" }}>
               <div style={{ position: "relative", aspectRatio: "3 / 2", borderRadius: 6, overflow: "hidden", background: "#EDE4D4" }}>
-                <ImageSlot src={img(images, "home.section.menu")} placeholder="Toasties, cake and a bottle" />
+                <ImageSlot src={img(images, "home.section.menu")} placeholder="Toasties, cake and a bottle" sizes="(max-width: 900px) 100vw, 50vw" />
               </div>
               <HighlightGroup title="Burgers & sandwiches" items={byGroup["Burgers & sandwiches"] ?? []} />
               <HighlightGroup title="Sweet" items={byGroup["Sweet"] ?? []} />
@@ -506,7 +506,7 @@ export default async function HomePage() {
                   <div key={c.title} style={infoCard}>
                     {image ? (
                       <div style={{ position: "relative", aspectRatio: "3 / 2", borderRadius: 4, overflow: "hidden", marginBottom: 12, background: "#EDE4D4" }}>
-                        <ImageSlot src={image} placeholder={c.title} />
+                        <ImageSlot src={image} placeholder={c.title} sizes="(max-width: 700px) 100vw, 33vw" />
                       </div>
                     ) : null}
                     <h3 style={infoCardH3}>{c.title}</h3>

@@ -155,7 +155,7 @@ export default async function OurStoryPage() {
                 animation: "float-y 13s ease-in-out 1.4s infinite",
               }}
             >
-              <ImageSlot src={img(images, "our-story.feature")} placeholder="The room — blue walls, timber, window bar" />
+              <ImageSlot src={img(images, "our-story.feature")} placeholder="The room — blue walls, timber, window bar" sizes="(max-width: 900px) 100vw, 50vw" />
             </div>
           </div>
         </section>

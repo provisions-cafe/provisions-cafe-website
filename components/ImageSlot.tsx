@@ -1,37 +1,42 @@
-import type { CSSProperties } from "react";
+import Image from "next/image";
 
 /**
- * Port of the design's `<image-slot>` placeholder. In the design tool it was a
- * drop-target that persisted a user image; here it simply renders the image
- * when a `src` is supplied, or a captioned placeholder frame when it isn't.
- * Always fills its (already sized) parent.
+ * Port of the design's `<image-slot>` placeholder. Renders the image when a
+ * `src` is supplied (via next/image so it's resized to the displayed size and
+ * served as AVIF/WebP), or a captioned placeholder frame when it isn't. Always
+ * fills its (already sized, position:relative) parent.
+ *
+ * `sizes` should describe how wide the image renders so the optimizer can pick
+ * the right resolution — pass a context-specific value from each caller.
+ * Remote override URLs (http…) pass through un-optimized (no host allow-list
+ * needed); local /uploads paths are optimized.
  */
 export default function ImageSlot({
   src,
   placeholder,
   alt,
   fit = "cover",
+  sizes = "100vw",
+  priority = false,
 }: {
   src?: string;
   placeholder?: string;
   alt?: string;
   fit?: "cover" | "contain";
+  sizes?: string;
+  priority?: boolean;
 }) {
-  const fill: CSSProperties = {
-    position: "absolute",
-    inset: 0,
-    width: "100%",
-    height: "100%",
-  };
-
   if (src) {
+    const remote = /^https?:\/\//.test(src);
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
+      <Image
         src={src}
         alt={alt ?? placeholder ?? ""}
-        loading="lazy"
-        style={{ ...fill, objectFit: fit, display: "block" }}
+        fill
+        sizes={sizes}
+        priority={priority}
+        unoptimized={remote}
+        style={{ objectFit: fit, display: "block" }}
       />
     );
   }
@@ -39,7 +44,8 @@ export default function ImageSlot({
   return (
     <div
       style={{
-        ...fill,
+        position: "absolute",
+        inset: 0,
         display: "grid",
         placeItems: "center",
         padding: 18,

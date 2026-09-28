@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import NextImage from "next/image";
 
 const nameStyle: CSSProperties = {
   fontFamily: "Petrona, Georgia, serif",
@@ -113,11 +114,13 @@ export function MenuItem({
             background: "#EDE4D4",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <NextImage
             src={img}
             alt={name}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            fill
+            sizes="(max-width: 700px) 100vw, 360px"
+            unoptimized={/^https?:\/\//.test(img)}
+            style={{ objectFit: "cover" }}
           />
         </div>
       ) : null}

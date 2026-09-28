@@ -193,7 +193,7 @@ export default async function FunctionsPage() {
                 boxShadow: "0 18px 40px -28px rgba(58,43,34,.5)",
               }}
             >
-              <ImageSlot src={img(images, "functions.feature")} placeholder="A long table set up for a group" />
+              <ImageSlot src={img(images, "functions.feature")} placeholder="A long table set up for a group" sizes="(max-width: 900px) 100vw, 50vw" />
             </div>
           </div>
         </section>

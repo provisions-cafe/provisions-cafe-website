@@ -179,7 +179,7 @@ export default function Hero({
               transition: "opacity 1.4s ease",
             }}
           >
-            <ImageSlot src={img(images, s.id)} placeholder={s.label} />
+            <ImageSlot src={img(images, s.id)} placeholder={s.label} priority={i === 0} sizes="100vw" />
           </div>
         ))}
         <div
@@ -485,6 +485,7 @@ export default function Hero({
             <ImageSlot
               src={img(images, "home.hero.tile.1")}
               placeholder="Coffee on the table"
+              sizes="(max-width: 700px) 45vw, 215px"
             />
           </div>
           <div
@@ -498,6 +499,7 @@ export default function Hero({
             <ImageSlot
               src={img(images, "home.hero.tile.2")}
               placeholder="The dining room"
+              sizes="(max-width: 700px) 45vw, 215px"
             />
           </div>
           <div
@@ -510,6 +512,7 @@ export default function Hero({
             <ImageSlot
               src={img(images, "home.hero.tile.3")}
               placeholder="The counter — coffee and cabinet"
+              sizes="(max-width: 700px) 45vw, 215px"
             />
           </div>
           <div
@@ -523,6 +526,7 @@ export default function Hero({
             <ImageSlot
               src={img(images, "home.hero.tile.4")}
               placeholder="Cakes in the cabinet"
+              sizes="(max-width: 700px) 45vw, 215px"
             />
           </div>
         </div>
