@@ -144,8 +144,18 @@ export default function InfoEditorClient({
         <div style={grid2}>
           <Field labelText="Phone (display)" value={s.contact.phoneDisplay} onChange={(v) => setContact("phoneDisplay", v)} />
           <Field labelText="Phone (tel: link)" value={s.contact.phoneHref} onChange={(v) => setContact("phoneHref", v)} />
+          <Field labelText="Enquiries email" value={s.contact.email} onChange={(v) => setContact("email", v)} />
           <Field labelText="Address line 1" value={s.contact.addressLine1} onChange={(v) => setContact("addressLine1", v)} />
           <Field labelText="Address line 2" value={s.contact.addressLine2} onChange={(v) => setContact("addressLine2", v)} />
+        </div>
+        <div style={{ marginTop: 14 }}>
+          <label style={label}>Parking &amp; getting here</label>
+          <textarea
+            style={textarea}
+            value={s.contact.parking}
+            placeholder="e.g. Along Ferguson Street. 1–2 hours free parking on weekdays and weekends."
+            onChange={(e) => setContact("parking", e.target.value)}
+          />
         </div>
       </Section>
 

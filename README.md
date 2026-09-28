@@ -60,5 +60,7 @@ public/
   remaining photos are reused where it appeared. Drop a replacement into
   `public/uploads/` and update the `src` in `components/home/Hero.tsx` /
   `app/page.tsx` to restore it.
-- The "TO FILL" notes are intentional — they mark copy the cafe still needs to
-  supply (reviews, functions pricing, parking, email, Instagram).
+- The remaining "TO FILL" notes are intentional — they mark copy the cafe still
+  needs to supply (our-story details, Instagram). Parking and the enquiries email
+  are now live and editable in Admin → Business info; functions is deliberately
+  enquiry-only (no fixed pricing).

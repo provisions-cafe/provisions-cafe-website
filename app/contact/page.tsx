@@ -207,23 +207,20 @@ export default async function ContactPage() {
               <p style={{ margin: "0 0 20px", fontSize: 17.5, lineHeight: 1.65, color: "#55433A", maxWidth: "46ch" }}>
                 We are on the Ferguson Street strip, a few minutes&apos; walk up from the Williamstown foreshore.
               </p>
-              <p
+              <div
                 style={{
-                  margin: 0,
-                  fontSize: 15.5,
-                  lineHeight: 1.6,
-                  color: "#8A5F22",
-                  border: "1px dashed rgba(169,118,43,.6)",
-                  borderRadius: 4,
-                  background: "rgba(169,118,43,.07)",
-                  padding: "14px 16px",
+                  border: "1px solid rgba(58,43,34,.15)",
+                  borderRadius: 6,
+                  background: "#F7F1E6",
+                  padding: "16px 18px",
                   maxWidth: "48ch",
                 }}
               >
-                <strong style={{ letterSpacing: ".1em", fontSize: 12.5 }}>TO FILL · PARKING</strong>
-                <br />
-                The parking situation in your own words — street parking on Ferguson St, time limits, the nearest side streets, and where to go on a busy weekend.
-              </p>
+                <p style={{ ...blueEyebrow, margin: "0 0 6px", color: "#A9762B" }}>Parking</p>
+                <p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: "#55433A" }}>
+                  {settings.contact.parking}
+                </p>
+              </div>
             </div>
             <div
               data-reveal="true"
@@ -267,32 +264,28 @@ export default async function ContactPage() {
             <div data-reveal="true">
               <h2 style={sectionH2}>Send us a note</h2>
               <p style={{ margin: "0 0 22px", fontSize: 17.5, lineHeight: 1.65, color: "#55433A", maxWidth: "46ch" }}>
-                A phone call between 7am and 3pm is quickest. Otherwise leave your details and we will come back to you.
+                A phone call between 7am and 3pm is quickest. Otherwise leave your details below, or email us, and we will come back to you.
               </p>
-              <p style={{ margin: "0 0 20px", fontSize: 15, lineHeight: 1.6, color: "#55433A", maxWidth: "46ch" }}>
+              <p style={{ margin: "0 0 22px", fontSize: 15, lineHeight: 1.6, color: "#55433A", maxWidth: "46ch" }}>
                 Planning a group booking or catering? The{" "}
                 <Link href="/functions">functions page</Link> has what we can do.
               </p>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: 15,
-                  lineHeight: 1.55,
-                  color: "#8A5F22",
-                  border: "1px dashed rgba(169,118,43,.6)",
-                  borderRadius: 4,
-                  background: "rgba(169,118,43,.07)",
-                  padding: "14px 16px",
-                  maxWidth: "46ch",
-                }}
-              >
-                <strong style={{ letterSpacing: ".1em", fontSize: 12.5 }}>TO FILL · EMAIL</strong>
-                <br />
-                An enquiries email address. The form sends nowhere until it is wired up to one.
+              <p style={{ ...blueEyebrow, color: "#A9762B" }}>Email</p>
+              <p style={{ margin: 0, fontSize: 18 }}>
+                <a
+                  href={`mailto:${settings.contact.email}`}
+                  style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#1E4359" }}
+                >
+                  {settings.contact.email}
+                </a>
               </p>
             </div>
 
-            <EnquiryForm variant="contact" />
+            <EnquiryForm
+              variant="contact"
+              email={settings.contact.email}
+              phone={settings.contact.phoneDisplay}
+            />
           </div>
         </section>
       </main>

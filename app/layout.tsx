@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import RevealController from "@/components/RevealController";
 import StructuredData from "@/components/StructuredData";
+import TopProgressBar from "@/components/TopProgressBar";
 import { SITE_URL } from "@/components/site-data";
 
 const DESCRIPTION =
@@ -73,6 +74,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
+        <TopProgressBar />
         <StructuredData />
         <RevealController />
         {children}

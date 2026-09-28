@@ -30,11 +30,11 @@ const sectionH2: CSSProperties = {
 function FnCard({
   title,
   body,
-  toFill,
+  note,
 }: {
   title: string;
   body: string;
-  toFill: ReactNode;
+  note: ReactNode;
 }) {
   return (
     <div
@@ -64,12 +64,12 @@ function FnCard({
           margin: 0,
           fontSize: 15,
           lineHeight: 1.55,
-          color: "#8A5F22",
-          borderTop: "1px dashed rgba(169,118,43,.5)",
+          color: "#6B564A",
+          borderTop: "1px solid rgba(58,43,34,.12)",
           paddingTop: 12,
         }}
       >
-        {toFill}
+        {note}
       </p>
     </div>
   );
@@ -233,7 +233,7 @@ export default async function FunctionsPage() {
                 maxWidth: "54ch",
               }}
             >
-              The shape of it, with the specifics still to confirm.
+              Every event is a little different, so we keep it simple — tell us what you have in mind and we&apos;ll sort the details with you. Enquire below or give us a call.
             </p>
             <div
               data-reveal="true"
@@ -242,29 +242,17 @@ export default async function FunctionsPage() {
               <FnCard
                 title="Group bookings"
                 body="Tables joined for a group, in the middle of a normal trading day. Best before the weekend rush or after 1pm."
-                toFill={
-                  <>
-                    <strong style={{ letterSpacing: ".1em", fontSize: 12 }}>TO FILL</strong> — maximum group size, notice needed, any minimum spend.
-                  </>
-                }
+                note="Tell us your date and numbers, and we'll confirm what we can seat."
               />
               <FnCard
                 title="Exclusive use"
                 body="The whole room to yourselves for a morning event, with a set menu out of the kitchen."
-                toFill={
-                  <>
-                    <strong style={{ letterSpacing: ".1em", fontSize: 12 }}>TO FILL</strong> — whether this is offered, which days, hire fee and per-head pricing.
-                  </>
-                }
+                note="Ask us about available mornings and we'll put a plan together."
               />
               <FnCard
                 title="Catering to go"
                 body="Breakfast and lunch platters, sandwiches, slices and coffee, packed for pick-up in Williamstown."
-                toFill={
-                  <>
-                    <strong style={{ letterSpacing: ".1em", fontSize: 12 }}>TO FILL</strong> — platter options and prices, minimum order, lead time, delivery radius.
-                  </>
-                }
+                note="Send your headcount and pick-up time and we'll sort the rest."
               />
             </div>
           </div>
@@ -298,26 +286,24 @@ export default async function FunctionsPage() {
                 {settings.contact.phoneDisplay}
               </a>
             </p>
-            <p
-              style={{
-                margin: 0,
-                fontSize: 15,
-                lineHeight: 1.55,
-                color: "#8A5F22",
-                border: "1px dashed rgba(169,118,43,.6)",
-                borderRadius: 4,
-                background: "rgba(169,118,43,.07)",
-                padding: "14px 16px",
-                maxWidth: "46ch",
-              }}
-            >
-              <strong style={{ letterSpacing: ".1em", fontSize: 12.5 }}>TO FILL · EMAIL</strong>
-              <br />
-              An enquiries email address, and who looks after functions. The form sends nowhere until it is wired up to one.
+            <p style={{ margin: "0 0 10px", fontSize: 12.5, fontWeight: 600, letterSpacing: ".18em", textTransform: "uppercase", color: "#A9762B" }}>
+              Email
+            </p>
+            <p style={{ margin: 0, fontSize: 18 }}>
+              <a
+                href={`mailto:${settings.contact.email}`}
+                style={{ display: "inline-flex", alignItems: "center", minHeight: 44, color: "#1E4359" }}
+              >
+                {settings.contact.email}
+              </a>
             </p>
           </div>
 
-          <EnquiryForm variant="functions" />
+          <EnquiryForm
+            variant="functions"
+            email={settings.contact.email}
+            phone={settings.contact.phoneDisplay}
+          />
         </section>
       </main>
 

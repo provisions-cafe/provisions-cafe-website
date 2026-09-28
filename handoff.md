@@ -115,9 +115,11 @@ be honored — porting the guide verbatim will break:
   `site_settings`), so they are NOT separate permission keys. Admin routes:
   `/admin/menu`, `/admin/info`, `/admin/specials`, `/admin/media`, `/admin/users`,
   `/admin/logs`; `/admin` dashboard is open to any authed user.
-- **Contact form → messages/Resend: DEFERRED.** `EnquiryForm` keeps its
-  "call us" note. No `resend` dependency in v1. (So skip CMS-GUIDE §11 for now,
-  and the `messages` table.)
+- **Contact form → messages/Resend: DEFERRED.** `EnquiryForm` now composes a
+  pre-addressed `mailto:` to the enquiries email (`settings.contact.email`) on
+  submit — no server-side backend. A proper messages/Resend flow is still
+  deferred. No `resend` dependency in v1. (So skip CMS-GUIDE §11 for now, and the
+  `messages` table.)
 - **v1 deps:** `@supabase/supabase-js @supabase/ssr zod` (installed). No `resend`.
 
 ### v1 scope — what becomes editable

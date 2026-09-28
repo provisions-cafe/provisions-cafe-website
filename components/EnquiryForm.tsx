@@ -11,14 +11,19 @@ const labelStyle: CSSProperties = {
 };
 
 /**
- * Enquiry form shared by the Functions and Contact pages. It has no backend
- * yet (matching the design's "to fill" state) — submitting just shows a note
- * pointing people to the phone.
+ * Enquiry form shared by the Functions and Contact pages. With no server-side
+ * mail backend, submitting composes a pre-addressed email (mailto:) to the
+ * enquiries address and hands off to the visitor's mail app — so an enquiry
+ * always reaches the cafe, alongside the phone option.
  */
 export default function EnquiryForm({
   variant,
+  email,
+  phone,
 }: {
   variant: "functions" | "contact";
+  email: string;
+  phone: string;
 }) {
   const [sent, setSent] = useState(false);
 
@@ -37,14 +42,37 @@ export default function EnquiryForm({
   };
 
   const note = sent
-    ? "Not sent — this form has no address behind it yet. Please call 03 9399 9955 in the meantime."
-    : "Needs an enquiries email address before it can send.";
+    ? `We've opened your email app to send this to ${email}. If nothing happened, email us at ${email} or call ${phone}.`
+    : `This opens your email app with the details ready to send to us. Prefer to talk? Call ${phone}.`;
 
   return (
     <form
       data-reveal="true"
       onSubmit={(e) => {
         e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        const name = String(fd.get("name") ?? "").trim();
+        const contact = String(fd.get("contact") ?? "").trim();
+        const notes = String(fd.get("notes") ?? "").trim();
+
+        const lines = [`Name: ${name}`, `Phone or email: ${contact}`];
+        if (variant === "functions") {
+          const date = String(fd.get("date") ?? "").trim();
+          const people = String(fd.get("people") ?? "").trim();
+          if (date) lines.push(`Date: ${date}`);
+          if (people) lines.push(`People: ${people}`);
+        }
+        if (notes) lines.push("", notes);
+
+        const subject =
+          variant === "functions"
+            ? `Functions enquiry${name ? ` — ${name}` : ""}`
+            : `Enquiry${name ? ` — ${name}` : ""}`;
+        const body = lines.join("\n");
+
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+          subject,
+        )}&body=${encodeURIComponent(body)}`;
         setSent(true);
       }}
       style={{

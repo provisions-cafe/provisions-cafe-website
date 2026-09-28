@@ -672,23 +672,23 @@ export default async function HomePage() {
               <p style={{ margin: "0 0 20px", fontSize: 17.5, lineHeight: 1.65, color: "#55433A", maxWidth: "46ch" }}>
                 We are on the Ferguson Street strip, a few minutes&apos; walk up from the Williamstown foreshore.
               </p>
-              <p
+              <div
                 style={{
                   margin: "0 0 20px",
-                  fontSize: 15.5,
-                  lineHeight: 1.6,
-                  color: "#8A5F22",
-                  border: "1px dashed rgba(169,118,43,.6)",
-                  borderRadius: 4,
-                  background: "rgba(169,118,43,.07)",
-                  padding: "14px 16px",
+                  border: "1px solid rgba(58,43,34,.15)",
+                  borderRadius: 6,
+                  background: "#F7F1E6",
+                  padding: "16px 18px",
                   maxWidth: "48ch",
                 }}
               >
-                <strong style={{ letterSpacing: ".1em", fontSize: 12.5 }}>TO FILL · PARKING</strong>
-                <br />
-                The parking situation in your own words — street parking on Ferguson St, time limits, the nearest side streets, and where to go on a busy weekend.
-              </p>
+                <p style={{ margin: "0 0 6px", fontSize: 12.5, fontWeight: 600, letterSpacing: ".14em", textTransform: "uppercase", color: "#A9762B" }}>
+                  Parking
+                </p>
+                <p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: "#55433A" }}>
+                  {settings.contact.parking}
+                </p>
+              </div>
               <a
                 href={settings.urls.directions}
                 target="_blank"

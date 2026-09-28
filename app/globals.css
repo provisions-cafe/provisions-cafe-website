@@ -117,7 +117,46 @@ textarea {
   }
 }
 
+/* ---- Route progress bar (top-of-page navigation loading) ---------------- */
+.route-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 2000;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(90deg, #1e4359 0%, #2f6178 45%, #c79a4e 100%);
+  box-shadow: 0 0 10px rgba(199, 154, 78, 0.6), 0 1px 4px rgba(30, 67, 89, 0.5);
+  opacity: 0;
+  transition: width 0.2s ease, opacity 0.35s ease 0.1s;
+  pointer-events: none;
+  overflow: hidden;
+}
+.route-progress[data-visible="true"] {
+  opacity: 1;
+  transition: width 0.2s ease, opacity 0.15s ease;
+}
+/* A soft highlight sweeping the bar, for a touch of life. */
+.route-progress::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(251, 247, 239, 0.65),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: rp-shimmer 1.1s ease-in-out infinite;
+}
+
 /* ---- Keyframes ---------------------------------------------------------- */
+@keyframes rp-shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
 @keyframes drift-l {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -225,5 +264,11 @@ textarea {
   }
   .review-card:hover {
     transform: none;
+  }
+  .route-progress {
+    transition: opacity 0.2s ease !important;
+  }
+  .route-progress::after {
+    display: none;
   }
 }

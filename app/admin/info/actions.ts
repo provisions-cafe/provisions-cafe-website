@@ -28,6 +28,8 @@ const settingsSchema = z.object({
     phoneHref: z.string().trim(),
     addressLine1: z.string().trim(),
     addressLine2: z.string().trim(),
+    email: z.string().trim(),
+    parking: z.string().trim(),
   }),
   business: z.object({
     name: z.string().trim().min(1, "Business name is required"),

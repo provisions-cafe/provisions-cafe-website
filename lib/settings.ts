@@ -35,6 +35,8 @@ export type SiteSettings = {
     phoneHref: string;
     addressLine1: string;
     addressLine2: string;
+    email: string;
+    parking: string;
   };
   business: {
     name: string;
@@ -75,6 +77,8 @@ export const SETTINGS_DEFAULTS: SiteSettings = {
     phoneHref: "tel:+61393999955",
     addressLine1: "62–64 Ferguson St",
     addressLine2: "Williamstown VIC 3016",
+    email: "williamstownprovisions@gmail.com",
+    parking: "Along Ferguson Street. 1–2 hours free parking on weekdays and weekends.",
   },
   business: {
     name: "Provisions Cafe",

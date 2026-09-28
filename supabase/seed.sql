@@ -153,7 +153,9 @@ insert into public.site_settings (id, data) values (
       'phoneDisplay', '03 9399 9955',
       'phoneHref',    'tel:+61393999955',
       'addressLine1', '62–64 Ferguson St',
-      'addressLine2', 'Williamstown VIC 3016'
+      'addressLine2', 'Williamstown VIC 3016',
+      'email',        'williamstownprovisions@gmail.com',
+      'parking',      'Along Ferguson Street. 1–2 hours free parking on weekdays and weekends.'
     ),
     'business', jsonb_build_object(
       'name',          'Provisions Cafe',
