@@ -4,10 +4,18 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getBookingSettings, getClosures } from "@/lib/booking.server";
+import { getSettings } from "@/lib/settings.server";
+import {
+  sendEmail,
+  escapeHtml,
+  renderEmailShell,
+} from "@/lib/email.server";
 import {
   addDaysISO,
   effectiveHoursForDate,
   effectiveMaxParty,
+  formatDateLabel,
+  formatTimeLabel,
   minDateTimeLocal,
   todayISO,
 } from "@/lib/booking";
@@ -165,6 +173,28 @@ export async function createBooking(
 
     // Surface the new booking in the admin list on next load.
     revalidatePath("/admin/bookings");
+
+    // Notify the cafe (and the guest, if they left an email). The booking is
+    // already saved — email is best-effort and must never turn success into an
+    // error, so failures are swallowed and only logged.
+    try {
+      await sendBookingEmails({
+        reference: res.reference ?? "",
+        status: res.status ?? (settings.autoConfirm ? "confirmed" : "pending"),
+        tableName: res.tableName ?? null,
+        date: b.date,
+        time: b.time,
+        partySize: b.partySize,
+        name: b.name,
+        phone: b.phone,
+        email: b.email,
+        notes: b.notes,
+        confirmationNote: settings.confirmationNote,
+      });
+    } catch (err) {
+      console.error("[booking] notification email failed:", err);
+    }
+
     return {
       ok: true,
       reference: res.reference,
@@ -174,4 +204,106 @@ export async function createBooking(
   } catch {
     return { error: "Something went wrong — please try again, or call us." };
   }
+}
+
+type BookingEmailData = {
+  reference: string;
+  status: string;
+  tableName: string | null;
+  date: string;
+  time: string;
+  partySize: number;
+  name: string;
+  phone: string;
+  email: string;
+  notes: string;
+  confirmationNote: string;
+};
+
+const GUEST_EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+/**
+ * Send the cafe a new-booking notification and, when the guest left an email, a
+ * confirmation to them. Not exported (so it stays a plain helper, not a server
+ * action). Each send is independent via allSettled; sendEmail never throws.
+ */
+async function sendBookingEmails(b: BookingEmailData): Promise<void> {
+  const site = await getSettings();
+  const cafeTo = process.env.EMAIL_TO || site.contact.email;
+  const dateLabel = formatDateLabel(b.date);
+  const timeLabel = formatTimeLabel(b.time);
+  const guests = `${b.partySize} ${b.partySize === 1 ? "guest" : "guests"}`;
+  const confirmed = b.status === "confirmed";
+
+  const rows: Array<[string, string]> = [
+    ["When", `${dateLabel} at ${timeLabel}`],
+    ["Party", guests],
+    ["Name", b.name],
+  ];
+  if (b.phone) rows.push(["Phone", b.phone]);
+  if (b.email) rows.push(["Email", b.email]);
+  if (b.tableName) rows.push(["Table", b.tableName]);
+  rows.push(["Status", confirmed ? "Confirmed" : "Pending review"]);
+  rows.push(["Reference", b.reference]);
+
+  const rowsHtml = rows
+    .map(
+      ([k, v]) =>
+        `<tr><td style="padding:4px 12px 4px 0;color:#8A5F22;font-weight:600;white-space:nowrap;vertical-align:top;">${escapeHtml(
+          k,
+        )}</td><td style="padding:4px 0;">${escapeHtml(v)}</td></tr>`,
+    )
+    .join("");
+  const notesHtml = b.notes
+    ? `<p style="margin:18px 0 0;"><strong style="color:#8A5F22;">Notes</strong></p>
+       <p style="margin:6px 0 0;white-space:pre-wrap;">${escapeHtml(b.notes)}</p>`
+    : "";
+  const detailsTable = `<table role="presentation" cellpadding="0" cellspacing="0">${rowsHtml}</table>${notesHtml}`;
+
+  const textLines = rows.map(([k, v]) => `${k}: ${v}`);
+  if (b.notes) textLines.push("", `Notes: ${b.notes}`);
+  const detailsText = textLines.join("\n");
+
+  const sends: Array<Promise<unknown>> = [];
+
+  // 1) Cafe notification.
+  sends.push(
+    sendEmail({
+      to: cafeTo,
+      subject: `New booking - ${b.name}, ${dateLabel} ${timeLabel} (${guests})`,
+      html: renderEmailShell({
+        heading: confirmed ? "New booking" : "New booking request",
+        preheader: `${b.name} · ${dateLabel} ${timeLabel} · ${guests}`,
+        bodyHtml: detailsTable,
+      }),
+      text: `New booking\n\n${detailsText}`,
+      replyTo:
+        b.email && GUEST_EMAIL_RE.test(b.email) ? b.email : undefined,
+    }),
+  );
+
+  // 2) Guest confirmation (only when they gave a valid email).
+  if (b.email && GUEST_EMAIL_RE.test(b.email)) {
+    const intro = confirmed
+      ? `Thanks ${escapeHtml(b.name)} — your table is booked. Here are the details:`
+      : `Thanks ${escapeHtml(b.name)} — we've received your booking request and will confirm shortly. Here's what you asked for:`;
+    sends.push(
+      sendEmail({
+        to: b.email,
+        subject: confirmed
+          ? `Your booking at Provisions Cafe - ${dateLabel}`
+          : `Booking request received - Provisions Cafe`,
+        html: renderEmailShell({
+          heading: confirmed ? "You're booked in" : "Request received",
+          preheader: `${dateLabel} at ${timeLabel} · ${guests}`,
+          bodyHtml: `<p style="margin:0 0 16px;">${intro}</p>${detailsTable}
+            <p style="margin:18px 0 0;color:#55433A;">${escapeHtml(b.confirmationNote)}</p>`,
+        }),
+        text: `${confirmed ? "You're booked in" : "Request received"}\n\n${detailsText}\n\n${b.confirmationNote}`,
+        replyTo: cafeTo,
+      }),
+    );
+  }
+
+  await Promise.allSettled(sends);
 }
