@@ -1,7 +1,7 @@
 // Shared, single-source-of-truth data for the whole site.
 
-export const BOOK_URL =
-  "https://www.google.com/maps/reserve/v/dine/c/PiDGJ7vEPco";
+// Internal booking page (see app/book). Editable in Admin → Business info.
+export const BOOK_URL = "/book";
 export const ORDER_URL =
   "https://www.doordash.com/store/provisions-williamstown-29945064/38552548/";
 export const DIRECTIONS_URL =

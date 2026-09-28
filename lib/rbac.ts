@@ -20,6 +20,7 @@ export const PERMISSION_KEYS = [
   "menu", // menu categories + items + home highlights
   "info", // business info (NAP / URLs / ratings) + opening hours
   "specials", // "What's on" / specials cards
+  "bookings", // table reservations + booking settings
   "media", // photo swaps (image overrides + media library)
   "users", // manage staff accounts — admin only in practice
   "logs", // activity log viewer — admin only in practice
@@ -45,6 +46,7 @@ export const PATH_PERMISSION_MAP: Record<string, PermissionKey | typeof ADMIN_ON
   "/admin/menu": "menu",
   "/admin/info": "info",
   "/admin/specials": "specials",
+  "/admin/bookings": "bookings",
   "/admin/media": "media",
   "/admin/users": ADMIN_ONLY,
   "/admin/logs": ADMIN_ONLY,
@@ -88,7 +90,13 @@ export function canAccess(
 }
 
 /** Ordered nav sections an employee could land on after login. */
-const LANDING_ORDER: PermissionKey[] = ["menu", "info", "specials", "media"];
+const LANDING_ORDER: PermissionKey[] = [
+  "menu",
+  "info",
+  "specials",
+  "bookings",
+  "media",
+];
 
 /**
  * Where to send a user after login (or when redirected away from a denied

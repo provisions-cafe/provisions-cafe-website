@@ -60,7 +60,7 @@ export type SiteSettings = {
 
 export const SETTINGS_DEFAULTS: SiteSettings = {
   urls: {
-    book: "https://www.google.com/maps/reserve/v/dine/c/PiDGJ7vEPco",
+    book: "/book",
     order:
       "https://www.doordash.com/store/provisions-williamstown-29945064/38552548/",
     directions:

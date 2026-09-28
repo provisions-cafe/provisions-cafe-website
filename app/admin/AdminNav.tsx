@@ -13,6 +13,7 @@ const NAV: NavItem[] = [
   { href: "/admin", label: "Dashboard", perm: null },
   { href: "/admin/menu", label: "Menu", perm: "menu" },
   { href: "/admin/info", label: "Business info", perm: "info" },
+  { href: "/admin/bookings", label: "Bookings", perm: "bookings" },
   { href: "/admin/media", label: "Photos", perm: "media" },
 ];
 

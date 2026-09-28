@@ -10,7 +10,9 @@ import { getSettings } from "@/lib/settings.server";
 export default async function StructuredData() {
   const settings = await getSettings();
   const BUSINESS = settings.business;
-  const BOOK_URL = settings.urls.book;
+  // Resolve a relative booking path (e.g. "/book") to an absolute URL for schema.org.
+  const bookRaw = settings.urls.book;
+  const BOOK_URL = bookRaw.startsWith("/") ? `${SITE_URL}${bookRaw}` : bookRaw;
   const data = {
     "@context": "https://schema.org",
     "@type": "CafeOrCoffeeShop",
