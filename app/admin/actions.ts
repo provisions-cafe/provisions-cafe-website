@@ -32,13 +32,6 @@ export async function signIn(
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
-    // TEMP diagnostic — remove after debugging the login issue.
-    console.error("[signIn] raw auth error:", {
-      status: (error as { status?: number }).status,
-      code: (error as { code?: string }).code,
-      name: error.name,
-      message: error.message,
-    });
     if (error.message.toLowerCase().includes("not confirmed")) {
       return { error: "Your account email isn't confirmed yet." };
     }
