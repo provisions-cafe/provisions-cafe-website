@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import RevealController from "@/components/RevealController";
@@ -47,6 +47,11 @@ export const metadata: Metadata = {
     title: "Provisions Cafe — Williamstown",
     description: OG_DESCRIPTION,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1E4359",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
