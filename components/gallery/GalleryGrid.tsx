@@ -66,9 +66,12 @@ export default function GalleryGrid({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/assets/gull-diag.png"
+          src="/assets/gull-diag.webp"
           alt=""
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
           style={{ position: "absolute", zIndex: -1, left: -90, bottom: "4%", width: "min(34vw, 300px)", opacity: 0.32, transform: "rotate(-7deg)", pointerEvents: "none" }}
         />
 

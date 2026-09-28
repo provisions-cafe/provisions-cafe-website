@@ -65,7 +65,8 @@ function Gull({ g }: { g: (typeof GULLS)[number] }) {
       style={{
         position: "absolute",
         top: g.top,
-        left: "-12%",
+        left: 0,
+        willChange: "transform",
         animation: `gull-cross ${g.cross} linear ${g.delay} infinite`,
       }}
     >

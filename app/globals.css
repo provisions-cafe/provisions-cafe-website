@@ -195,8 +195,8 @@ textarea {
   100% { transform: translateY(-74px) scale(1); opacity: 0; }
 }
 @keyframes gull-cross {
-  from { left: -12%; }
-  to { left: 110%; }
+  from { transform: translateX(-12vw); }
+  to { transform: translateX(110vw); }
 }
 @keyframes glide-y {
   0%, 100% { transform: translateY(0); }
